@@ -1,0 +1,65 @@
+/* CSS Document */
+
+body {
+	margin: 0;
+	padding: 0;
+/*	background:url(../images/bodybg-trans.png) no-repeat fixed center;*/
+	min-height: 500px;
+	font-family: 'Segoe UI' !important;
+        background:url(../images/bg-footer-big.png) repeat-x fixed bottom;
+}
+
+#bg {
+    width: 100%;
+    height: 100%;
+}
+#container {
+    height: 100%;
+}
+#bghead {
+    background:url(../images/bg-header-big.png) repeat-x fixed top;
+    margin: 0;
+    padding: 0;
+}
+#bghead #bghead-bg {
+    background:url(../images/bg-header.png) repeat-y fixed top;
+}
+#bgfooter {
+/*    background:url(../images/bg-footer-big.png) no-repeat fixed bottom;*/
+}
+#bgfooter #bgfooter-bg {
+    background:url(../images/bg-bottom.png) repeat-y fixed bottom;
+}
+
+a {
+	color: #999;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #91191c;
+}
+
+input {
+	font-family: 'Segoe UI';
+	font-size: 12px;
+}
+
+/* FOOTER */
+#footerContainer {
+	position: relative;	
+        height: 18px;
+}
+#footerContents {
+	float: right;	
+        display: block;
+}
+#footerContents p {
+        height: 100%;
+	font-size: 10px;	
+	margin: 0 5px 0 0;
+        padding: 0;
+	text-align: right;
+        color: #000;
+}
+/* FOOTER */

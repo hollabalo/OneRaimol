@@ -1,0 +1,3 @@
+<li><a href="<?php echo $base_url . $moduleURL ?>/rawmaterials" <?php if(isset($leftSelection) && $leftSelection == 'rawmaterials') echo 'class="selected"'?>>raw materials</a></li>
+                    <li><a href="<?php echo $base_url . $moduleURL ?>/inventory" <?php if(isset($leftSelection) && $leftSelection == 'inventory') echo 'class="selected"'?>>inventory</a></li>
+                    <li><a href="<?php echo $base_url . $moduleURL ?>/prices" <?php if(isset($leftSelection) && $leftSelection == 'prices') echo 'class="selected"'?>>prices</a></li>

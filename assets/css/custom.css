@@ -1,0 +1,139 @@
+/* CSS Document */
+
+/* FONT FACES */
+
+/* FONT FACES */
+
+body {
+	margin: 0;
+	padding: 0;
+	min-height: 500px;
+}
+
+#top-spacer {
+	background:url(../images/RAIMOLLOGO2.png) no-repeat bottom left;
+	height: 144px;
+}
+#container {
+	min-height: 324px;
+}
+
+/* MAIN MENU */
+#mainMenu-box {
+	height: 126px;
+	background-color: #ececec;
+	margin-bottom: 10px;
+	font-family: 'Segoe UI';
+	font-size: 16px;
+	text-transform: capitalize;
+}
+#mainMenu-box a {
+	text-decoration:none;
+	color:#333;
+	padding: 10px;
+}
+#mainMenu-box span a  {
+	display: block;
+	height: 106px;
+	width: 210px;
+}
+#mainMenu-box .list1 a {
+	background: url(../images/menu-account.png) no-repeat 170px 65px;
+}
+#mainMenu-box .list1 a:hover {
+	background: url(../images/menu-account-h.png) no-repeat 170px 65px;
+	color:#fff;
+	background-color: #9a2c2f;
+}
+#mainMenu-box .list2 a {
+	background: url(../images/menu-inventory.png) no-repeat 170px 65px;
+}
+#mainMenu-box .list2 a:hover {
+	background: url(../images/menu-inventory-h.png) no-repeat 170px 65px;
+	color:#fff;
+	background-color: #9a2c2f;
+}
+#mainMenu-box .list3 a {
+	background: url(../images/menu-formula.png) no-repeat 170px 65px;
+}
+#mainMenu-box .list3 a:hover {
+	background: url(../images/menu-formula-h.png) no-repeat 170px 65px;
+	color:#fff;
+	background-color: #9a2c2f;
+}
+#mainMenu-box .list4 a {
+	background: url(../images/menu-signatories.png) no-repeat 170px 65px;
+}
+#mainMenu-box .list4 a:hover {
+	background: url(../images/menu-signatories-h.png) no-repeat 170px 65px;
+	color:#fff;
+	background-color: #9a2c2f;
+}
+#mainMenu-box .list5 a {
+	background: url(../images/menu-tracking.png) no-repeat 170px 65px;
+}
+#mainMenu-box .list5 a:hover {
+	background: url(../images/menu-tracking-h.png) no-repeat 170px 65px;
+	color:#fff;
+	background-color: #9a2c2f;
+}
+#mainMenu-box .list6 a {
+	background: url(../images/menu-reports.png) no-repeat 170px 65px;
+}
+#mainMenu-box .list6 a:hover {
+	background: url(../images/menu-reports-h.png) no-repeat 170px 65px;
+	color:#fff;
+	background-color: #9a2c2f;
+}
+#mainMenu-box #userBox {
+        position: relative;
+        display: block;
+        padding: 10px;
+}
+#mainMenu-box #userBox .userAvatar {
+    position: absolute;
+    left: 10px;
+    top: 15px;
+}
+#mainMenu-box #userBox .userDetails {
+    position: absolute;
+    left: 70px;
+    top: 10px;
+    width: 150px;
+}
+#mainMenu-box #userBox .userDetails h1 {
+    font-size: 18pt;
+}
+#mainMenu-box #userBox .userDetails h4 {
+    color: #333;
+}
+/* MAIN MENU */
+
+.form {
+    width: 100%;
+}
+.form input {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+/*.form .error {
+    padding: 0;
+}*/
+.form tr th span {
+    margin-top: 5px;
+    padding-top: 5px;
+}
+.form tr td, .form tr th {
+    background-color: transparent !important;
+    padding: 5px;
+}
+.form #msg .notice, .form #msg .error, .form #msg .success  {
+    display: block;
+    width: 700px;
+}
+
+.form .wait {
+    background: url(../images/ajax-loader.gif) no-repeat 5px;
+    padding-left: 25px;
+}

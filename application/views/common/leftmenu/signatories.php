@@ -1,0 +1,3 @@
+<li><a href="<?php echo $base_url . $moduleURL ?>/so" <?php if(isset($leftSelection) && $leftSelection == 'so') echo 'class="selected"'?>>sales order</a></li>
+                    <li><a href="<?php echo $base_url . $moduleURL ?>/pwo" <?php if(isset($leftSelection) && $leftSelection == 'pwo') echo 'class="selected"'?>>production work order</a></li>
+                    <li><a href="<?php echo $base_url . $moduleURL ?>/formula" <?php if(isset($leftSelection) && $leftSelection == 'formula') echo 'class="selected"'?>>formula</a></li>

@@ -1,0 +1,2 @@
+<li><a href="<?php echo $base_url . $moduleURL ?>/customer" <?php if(isset($leftSelection) && $leftSelection == 'customer') echo 'class="selected"'?>>customer</a></li>
+                    <li><a href="<?php echo $base_url . $moduleURL ?>/staff" <?php if(isset($leftSelection) && $leftSelection == 'staff') echo 'class="selected"'?>>staff</a></li>
