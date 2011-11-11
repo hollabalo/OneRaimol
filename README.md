@@ -1,3 +1,3 @@
-# Kohana PHP Framework, version 3.1 (release)
+# OneRaimol, version 0.1.49 (alpha)
 
-This is the current release version of [Kohana](http://kohanaframework.org/).
+Business system for [Rainchem International, Inc.](http://www.raimol.com).
