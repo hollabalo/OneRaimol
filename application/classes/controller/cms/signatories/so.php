@@ -131,12 +131,12 @@
             $this->template->body->bodyContents = View::factory('cms/signatories/so/grid');
             
             // The query is exact or not. Mimics the double quote searches in Google
-//            if($_POST['stringmatch'] == TRUE) {
-//                $record = Helper_Helper::decrypt($record);
-//            }
-//            else {
-//                $record = Helper_Helper::decrypt($record) . '%';
-//            }
+            if($_POST['stringmatch'] == TRUE) {
+                $record = Helper_Helper::decrypt($record);
+            }
+            else {
+                $record = Helper_Helper::decrypt($record) . '%';
+            }
             
             // Gotta be immune from SQL injection attacks. :)
             $this->salesorder = ORM::factory('so')
@@ -149,14 +149,14 @@
             if(0 == Constants_FormAction::COMPANY) {
                 $this->salesorder->where('customer_tb.company', 'LIKE', $record . '%');
             }
-//            else if($_POST['searchtype'] == Constants_FormAction::ORDER_DATE) {
-//                $this->salesorder->where('purchase_order_tb.order_date', 'LIKE', $record);
-//            }
-//            else if($_POST['searchtype'] == Constants_FormAction::DELIVERY_DATE) {
-//                $this->salesorder->where('purchase_order_tb.delivery_date', 'LIKE', $record);
-//            }
-//            
-//            
+            else if($_POST['searchtype'] == Constants_FormAction::ORDER_DATE) {
+                $this->salesorder->where('purchase_order_tb.order_date', 'LIKE', $record);
+            }
+            else if($_POST['searchtype'] == Constants_FormAction::DELIVERY_DATE) {
+                $this->salesorder->where('purchase_order_tb.delivery_date', 'LIKE', $record);
+            }
+            
+            
 //            if($_POST['approvefilter'] == Constants_FormAction::APPROVE) {
 //                if(is_array($this->session->get('roles'))) {
 //                    
