@@ -1,4 +1,12 @@
-<?php
+<?php defined('SYSPATH') or die('No direct script access.');
+
+/**
+ * Materials category model.
+ * 
+ * @category   Model
+ * @author     Gerona, John Michael D.
+ * @copyright  (c) 2011 DCDGLP
+ */
 class Model_Materialcategory extends ORM {
 
         protected $_table_name  = 'material_category_tb';
@@ -8,7 +16,11 @@ class Model_Materialcategory extends ORM {
             'materials' => array(
                 'model' => 'material',
                 'foreign_key' => 'material_id'
-            )  
+            ),
+            'products' => array(
+                'model' => 'product',
+                'foreign_key' => 'product_id'
+            )
         );
         
 }

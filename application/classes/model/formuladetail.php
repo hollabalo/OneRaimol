@@ -1,4 +1,12 @@
-<?php
+<?php defined('SYSPATH') or die('No direct script access.');
+
+/**
+ * Formula-detail model.
+ * 
+ * @category   Model
+ * @author     Gerona, John Michael D.
+ * @copyright  (c) 2011 DCDGLP
+ */
 class Model_Formuladetail extends ORM {
 
         protected $_table_name  = 'formula_detail_tb';

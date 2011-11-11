@@ -1,4 +1,12 @@
-<?php
+<?php defined('SYSPATH') or die('No direct script access.');
+
+/**
+ * Sales order item model.
+ * 
+ * @category   Model
+ * @author     Gerona, John Michael D.
+ * @copyright  (c) 2011 DCDGLP
+ */
 class Model_Soitem extends ORM {
 
         protected $_table_name  = 'sales_order_item_tb';

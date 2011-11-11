@@ -1,6 +1,8 @@
 <script src="<?php echo $base_url . $config['js'] ?>/jquery.form.js" type="text/javascript"></script>
 <script src="<?php echo $base_url . $config['js'] ?>/jquery.validate.js" type="text/javascript"></script>
-<script src="<?php echo $base_url . $config['js'] ?>/cms/accounts/staff.js" type="text/javascript"></script>
+
+<?php $form_js = Compress::instance('javascripts')->scripts(array($config['js'] . '/cms/accounts/staff.js'));
+       echo HTML::script($form_js); ?>
 
     <div id="msg"></div>
 <form id="staff-form" method="post" action="<?php echo $base_url ?>cms/accounts/staff/process_form/<?php if(isset($staff)) echo Helper_Helper::encrypt($staff->staff_id) ?>">
@@ -138,64 +140,5 @@
   </table>
 </form>
 
-<script type="text/javascript">
-$( document ).ready(
-    function() {
-        $( '#staff-form' ).validate(
-            {
-                rules : {
-                    first_name      : 'required',
-                    last_name       : 'required',
-                    sex             : 'required',
-                    address         : 'required',
-                    telephone_no       : 'required',
-                    username        : 'required',
-                    password        : {
-                        required : true,
-                        minlength : 8,
-                        alphanumeric : true
-                    },
-                    retype_password : {
-                        required : true,
-                        minlength : 8,
-                        equalTo : '#password'
-                    },
-                    primary_email   : {
-                        required : true,
-                        email : true
-                    }
-                },
-                messages : {
-                    first_name          : message.required,
-                    last_name           : message.required,
-                    sex                 : message.required,
-                    address             : message.required,
-                    telephone_no           : message.required,
-                    username            : message.required,
-                    password            : {
-                        required : message.required,
-                        minlength: message.passwordshort
-                    },
-                    retype_password     : {
-                        required : message.required,
-                        minlength: message.passwordshort,
-                        equalTo: message.passwordnotmatch
-                    },
-                    primary_email       : {
-                        required : message.required,
-                        email    : message.email
-                    }
-                },
-                submitHandler : function() {
-                    submit_staff();
-                },
-                errorPlacement: function( error, element ) {
-                    element.closest('tr')
-                           .find('span:last')
-                           .append( error );
-                }
-            }
-        );
-    }
-);
-</script>
+<?php $form_validation = Compress::instance('javascripts')->scripts(array($config['js'] . '/cms/accounts/form/staff.js'));
+       echo HTML::script($form_validation); ?>

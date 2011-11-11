@@ -1,4 +1,12 @@
-<?php
+<?php defined('SYSPATH') or die('No direct script access.');
+
+/**
+ * Production work order model.
+ * 
+ * @category   Model
+ * @author     Gerona, John Michael D.
+ * @copyright  (c) 2011 DCDGLP
+ */
 class Model_Pwo extends ORM {
 
         protected $_table_name  = 'production_work_order_tb';

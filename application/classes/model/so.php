@@ -1,4 +1,12 @@
-<?php
+<?php defined('SYSPATH') or die('No direct script access.');
+
+/**
+ * Sales order model.
+ * 
+ * @category   Model
+ * @author     Gerona, John Michael D.
+ * @copyright  (c) 2011 DCDGLP
+ */
 class Model_So extends ORM {
 
     //CHECK IF purchaseorders will work (probably not)
@@ -41,6 +49,91 @@ class Model_So extends ORM {
             'collection' => array(
                 'model' => 'staff',
                 'foreign_key' => 'acc_collection_approved'
+            ),
+            'paymentmethod' => array(
+                'model' => 'paymentmethod',
+                'foreign_key' => 'payment_method'
             )
         );
+        
+        /**
+         * @var string approvalstatus The Approval status
+         */
+        public $approvalstatus = '';
+        
+        /**
+         * @var string color The color
+         */
+        public $color = '';
+        
+        /**
+         * Gets the document status.
+         * @return string 
+         */
+        public function get_status() {
+            if($this->purchaseorders->status == Constants_DocType::PURCHASE_ORDER) {
+                return 'PO';
+            }
+            else if($this->purchaseorders->status == Constants_DocType::SALES_ORDER) {
+                return 'SO';
+            }
+            else if($this->purchaseorders->status == Constants_DocType::FORMULA) {
+                return 'Formula Pending';
+            }
+            else if($this->purchaseorders->status == Constants_DocType::PRODUCTION_WORK_ORDER) {
+                return 'PWO';
+            }
+            else if($this->purchaseorders->status == Constants_DocType::PRODUCTION_BATCH_TICKET) {
+                return 'PBT';
+            }
+            else if($this->purchaseorders->status == Constants_DocType::DELIVERY_RECEIPT) {
+                return 'DR';
+            }
+        }
+        
+        /**
+         * Gets the record status for display
+         * @return string 
+         */
+        public function color_status() {
+            
+            if(is_array(Session::instance()->get('userid'))) {
+                
+            }
+            
+            return $this->status == 1 ? 'green' : 'red';
+        }
+        
+        /**
+         * Gets the approval status of the sales order.
+         * @return string
+         */
+        public function get_approval() {
+
+            if(is_array(Session::instance()->get('roles'))) {
+                return 'Multiple';
+            }
+            else {
+                $this->approvalstatus = 'Error';
+                // Get role
+                $role = Session::instance()->get('roles');
+                
+                if($role == (string)Constants_UserType::SALES_REPRESENTATIVE) {
+                    $this->approvalstatus = is_null($this->sc_approved) ? 'No' : 'Yes';
+                }
+                else if($role == (string)Constants_UserType::GENERAL_MANAGER) {
+                    $this->approvalstatus = is_null($this->gm_approved) ? 'No' : 'Yes';
+                }
+                else if($role == (string)Constants_UserType::ACCOUNTING) {
+                    $this->approvalstatus = is_null($this->acc_credit_approved) ? 'No' : 'Yes';
+                    $this->approvalstatus = is_null($this->acc_collection_approved) ? 'No' : 'Yes';
+                }
+
+                return $this->approvalstatus;
+            }
+        }
+        
+        public function get_color() {
+            $this->color = $this->approvalstatus == 'Yes' ? 'Green' : 'Red';
+        }
 }

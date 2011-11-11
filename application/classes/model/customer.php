@@ -1,4 +1,12 @@
-<?php
+<?php defined('SYSPATH') or die('No direct script access.');
+
+/**
+ * Customer model.
+ * 
+ * @category   Model
+ * @author     Gerona, John Michael D.
+ * @copyright  (c) 2011 DCDGLP
+ */
 class Model_Customer extends ORM {
 
         protected $_table_name  = 'customer_tb';
@@ -22,14 +30,27 @@ class Model_Customer extends ORM {
 
             return $this;
         }
+        
+        /**
+         * Gets the full name.
+         * @return string 
+         */
         public function full_name() {
             return $this->first_name . ' ' . $this->last_name;
         }
        
+        /**
+         * Gets the record status
+         * @return string 
+         */
         public function status() {
             return $this->status == 1 ? 'Active' : 'Inactive';
         }
 
+        /**
+         * Gets the record status for display
+         * @return string 
+         */
         public function color_status() {
             return $this->status == 1 ? 'green' : 'red';
         }

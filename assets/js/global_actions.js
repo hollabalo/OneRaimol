@@ -27,7 +27,7 @@ function get_ids( class_name ) {
         }
     );
 
-    return ids;
+    return ids; 
 }
 
 function check_all( object ) {
@@ -43,4 +43,13 @@ function check_all( object ) {
             }
         }
     );
+}
+
+function limit_record(refURL, method) {
+    if(method != '') {
+        redirect(refURL + '/' + method + '/' + $('#limitpicker').val());
+    }
+    else {
+        redirect(refURL + '/' + $('#limitpicker').val());
+    }
 }

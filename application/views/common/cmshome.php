@@ -8,9 +8,14 @@
 <!--[if lt IE 8]>
 <link rel="stylesheet" href="<?php echo $base_url . $config['css'] ?>/blueprint/ie.css" type="text/css" media="screen, projection" />
 <![endif]-->
-<link rel="stylesheet" href="<?php echo $base_url . $config['css'] ?>/global.css" />
-<link rel="stylesheet" href="<?php echo $base_url . $config['css'] ?>/custom.css" />
-
+<?php
+     $styles = Compress::instance('stylesheets')->styles(array(
+                                                $config['css'] . '/global.css', 
+                                                $config['css'] . '/custom.css'
+                                             ), $config['css'] . '/999.css');
+     
+     echo HTML::style($styles);
+?>
 <!--[if lt IE 9]>
 <script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
 <![endif]-->
@@ -22,7 +27,15 @@
 </script>
 <script src="<?php echo $base_url . $config['js'] ?>/jquery-1.6.2.min.js" type="text/javascript"></script>
 <script type="text/javascript">var base_url = '<?php echo $base_url ?>';</script>
-<script src="<?php echo $base_url . $config['js'] ?>/global_actions.js" type="text/javascript"></script>
+<?php 
+    $js = Compress::instance('javascripts')->scripts(array(
+                                           $config['js'] . '/global_actions.js'
+                                       ),  $config['js'] . '/aaa.js');
+    
+    echo HTML::script($js);
+    
+?>
+
 <script type="text/javascript">
     var message = {<?php if(isset($formmessages)) echo $formmessages; ?>};
 </script>

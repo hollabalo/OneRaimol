@@ -11,9 +11,15 @@
 <!--[if lt IE 8]>
 <link rel="stylesheet" href="<?php echo $base_url . $config['css'] ?>/blueprint/plugins/liquid/ie.css" type="text/css" media="screen, projection" />
 <![endif]-->
-<link rel="stylesheet" href="<?php echo $base_url . $config['css'] ?>/global.css" />
-<link rel="stylesheet" href="<?php echo $base_url . $config['css'] ?>/child.css" />
-<link rel="stylesheet" type="text/css" href="<?php echo $base_url . $config['css'] ?>/jformer.css" ></link>
+
+<?php
+     $styles = Compress::instance('stylesheets')->styles(array(
+                                                $config['css'] . '/global.css', 
+                                                $config['css'] . '/child.css'
+                                             ), $config['css'] . '/12.css');
+     
+     echo HTML::style($styles);
+?>
 
 <!--[if lt IE 9]>
 <script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
@@ -27,9 +33,19 @@
         Cufon.replace('#footerContents',  { fontFamily: 'Segoe UI Light' });
 </script>
 <script src="<?php echo $base_url . $config['js'] ?>/jquery-1.6.2.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="<?php echo $base_url . $config['js'] ?>/jformer.js" ></script>
 <script type="text/javascript">var base_url = '<?php echo $base_url ?>';</script>
-<script src="<?php echo $base_url . $config['js'] ?>/global_actions.js" type="text/javascript"></script>
+
+<?php 
+    $js = Compress::instance('javascripts')->scripts(array(
+                                           $config['js'] . '/global_actions.js'
+                                       ),  $config['js'] . '/asdfg.js');
+    
+    echo HTML::script($js);
+    
+?>
+
+
+<!--<script src="<?php // echo $base_url . $config['js'] ?>/global_actions.js" type="text/javascript"></script>-->
 <script type="text/javascript">
     var message = {<?php if(isset($formmessages)) echo $formmessages; ?>};
 </script>

@@ -1,5 +1,7 @@
  <script src="<?php echo $base_url . $config['js'] ?>/jquery.validate.js" type="text/javascript"></script>
-<script src="<?php echo $base_url . $config['js'] ?>/cms/accounts/staff.js" type="text/javascript"></script>
+ 
+ <?php $form_js = Compress::instance('javascripts')->scripts(array($config['js'] . '/cms/accounts/staff.js'));
+       echo HTML::script($form_js); ?>
 
    <?php if(isset($pageSelectionLabel)) : ?>
         <p><?php echo $pageSelectionLabel ?></p>
@@ -19,10 +21,10 @@
                     <tbody>
                     	<tr>
                             <th style="width:2%"><input type="checkbox" onclick="check_all(this);"/></th>
-                            <th>Status</th>
-                            <th>Role</th>
-                            <th>Name</th>
-                            <th>Username</th>
+                            <th style="width:5%">Status</th>
+                            <th style="width:35%">Role</th>
+                            <th style="width:37%">Name</th>
+                            <th style="width:15%">Username</th>
                             <th style="width:6%">&nbsp;</th>
                         </tr>
 
@@ -51,3 +53,4 @@
                         <?php endif ?>
                     </tbody>
                 </table>
+                <?php if(isset($pageselector)) echo $pageselector ?>

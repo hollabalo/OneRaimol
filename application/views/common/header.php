@@ -17,7 +17,7 @@
         <!-- BREADCRUMBS -->
         
         <div class="block clearfix" id="crumbContainer">
-        	<div class="column span-10"><a href="<?php if(isset($moduleURL)) echo $base_url . $moduleURL ?>"><img src="<?php echo $base_url . $imgpath ?>/<?php echo $img ?>"/></a><h1><a href="<?php if(isset($moduleURL)) echo $base_url . $moduleURL ?>"><?php echo $pageDesc ?></a></h1></div>
+        	<div class="column span-10"><a href="<?php if(isset($moduleURL)) echo $base_url . $moduleURL ?>"><img src="<?php echo $base_url . $imgpath ?>/<?php echo $img ?>" alt="modulelogo"/></a><h1><a href="<?php if(isset($moduleURL)) echo $base_url . $moduleURL ?>"><?php echo $pageDesc ?></a></h1></div>
         </div>
         
         <!-- BREADCRUMBS -->

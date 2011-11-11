@@ -112,6 +112,7 @@ Kohana::modules(array(
         'kohana-email'  => MODPATH.'kohana-email',  // Email
         'swiftmailer'   => MODPATH.'swiftmailer',     // Swiftmailer
         'breadcrumbs'   => MODPATH.'breadcrumbs',      // Breadcrumbs
+        'media'         => MODPATH.'media',         // Media compressor
         //'jformer'       => MODPATH.'jformer'      // Breadcrumbs
         //'doctrine2'     => MODPATH.'doctrine2',     // Doctrine ORM
 	// 'unittest'   => MODPATH.'unittest',      // Unit testing

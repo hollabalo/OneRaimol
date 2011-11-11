@@ -1,6 +1,8 @@
 <script src="<?php echo $base_url . $config['js'] ?>/jquery.form.js" type="text/javascript"></script>
 <script src="<?php echo $base_url . $config['js'] ?>/jquery.validate.js" type="text/javascript"></script>
-<script src="<?php echo $base_url . $config['js'] ?>/cms/accounts/customer.js" type="text/javascript"></script>
+
+<?php $form_js = Compress::instance('javascripts')->scripts(array($config['js'] . '/cms/accounts/customer.js'));
+       echo HTML::script($form_js); ?>
 
     <div id="msg"></div>
 <form id="customer-form" method="post" action="<?php echo $base_url ?>cms/accounts/customer/process_form/<?php if(isset($customer)) echo Helper_Helper::encrypt($customer->customer_id) ?>">
@@ -134,68 +136,5 @@
   </table>
 </form>
 
-<script type="text/javascript">
-$( document ).ready(
-    function() {
-        $( '#customer-form' ).validate(
-            {
-                rules : {
-                    first_name      : 'required',
-                    last_name       : 'required',
-                    sex             : 'required',
-                    address         : 'required',
-                    delivery_address: 'required',
-                    telephone       : 'required',
-                    company         : 'required',
-                    username        : 'required',
-                    password        : {
-                        required : true,
-                        minlength : 8,
-                        alphanumeric : true
-                    },
-                    retype_password : {
-                        required : true,
-                        minlength : 8,
-                        equalTo : '#password'
-                    },
-                    primary_email   : {
-                        required : true,
-                        email : true
-                    }
-                },
-                messages : {
-                    first_name          : message.required,
-                    last_name           : message.required,
-                    sex                 : message.required,
-                    address             : message.required,
-                    delivery_address    : message.required,
-                    company             : message.required,
-                    telephone           : message.required,
-                    username            : message.required,
-                    password            : {
-                        required : message.required,
-                        minlength: message.passwordshort
-                    },
-                    retype_password     : {
-                        required : message.required,
-                        minlength: message.passwordshort,
-                        equalTo: message.passwordnotmatch
-                    },
-                    primary_email       : {
-                        required : message.required,
-                        email    : message.email
-                    }
-                },
-                submitHandler : function() {
-                    submit_customer();
-                },
-                errorPlacement: function( error, element ) {
-                    element.closest('tr')
-                           .find('span:last')
-                           .append( error );
-                }
-            }
-        );
-    }
-);
-</script>
+<?php $form_validation = Compress::instance('javascripts')->scripts(array($config['js'] . '/cms/accounts/form/customer.js'));
+       echo HTML::script($form_validation); ?>

@@ -130,6 +130,7 @@ h2 {
 }
 #formMenu {
 	text-transform: lowercase;
+        float: right;
 }
 #formMenu ul {
 	float: right;
@@ -140,6 +141,36 @@ h2 {
 	float: left;
 	margin: 0 6px;	
 	list-style: none;
+}
+#searchBox {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+#searchBox form {
+    float: right;
+    
+}
+#searchBox input {
+    background-color: #ccc;
+    border: 0;
+    margin: 0;
+}
+#searchBox .dd-box {
+    width: 150px !important;
+}
+#gridBottom {
+    margin-bottom: 8px;
+}
+#recordLimit {
+    font-size: 8pt;
+    color: #666 !important;
+}
+#recordLimit select {
+    font-size: 8pt;
+    margin: 0;
+    color: #333;
+    border: 0;
 }
 /* LINK SELECTOR */
 .selected {
@@ -270,8 +301,27 @@ h2 {
 
 /* PAGINATION */
 
-.pagination-container {
+#pagination {
+    float: right;
+    margin: 0;
+}
+#pagination div {
+    float: right;
+    margin: 0;
     text-align: center;
+}
+#pagination div .box, #pagination div .selected {
+    margin: 0;
+}
+#pagination  a, #pagination div .selected {
+    padding: 0px;
+}
+#pagination div .prev, #pagination div .next {
+    padding: 3px;
+}
+#pagination div .first, #pagination div .last {
+    padding: 0px !important;
+    margin: 0px;
 }
 .box {
     padding: 0;
@@ -281,7 +331,7 @@ h2 {
 }
 .box a {
     display: inline-block;
-    width: 20px;
+    width: 15px;
     padding: 3px;
     vertical-align: middle;
     text-decoration: none;
@@ -289,8 +339,8 @@ h2 {
 }
 .box .selected {
     display: inline-block;
-    width: 20px;
-    padding: 5px;
+    width: 15px;
+    padding: 0;
     vertical-align: middle;
     text-decoration: none;
     font-weight: bold;

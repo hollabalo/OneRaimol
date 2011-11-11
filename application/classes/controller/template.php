@@ -1,7 +1,13 @@
-<?php
+<?php defined('SYSPATH') or die('No direct script access.');
 
-    defined('SYSPATH') or die('No direct script access.');
-
+/**
+ * Controller template for OneRaimol.
+ * All application controllers extend from this controller.
+ * 
+ * @category   Controller
+ * @author     Gerona, John Michael D.
+ * @copyright  (c) 2011 DCDGLP
+ */
     class Controller_Template extends Controller {
 	/**
 	 * @var  View  page template
@@ -39,10 +45,15 @@
         protected $json = array();
 
 
-	/**
-	 * Loads the template [View] object.
-         * Initialize Variables ...
-	 */
+        /**
+         * Automatically executed before the controller action.
+         * Page initialization takes place here.
+         * 
+         * Initialization of template, session, paths, and configs
+         * 
+         * @param boolean $ssl_required The HTTP request. Whether unsecured or secured HTTP.
+         * @return object
+         */
 	public function before( $ssl_required = FALSE ) {
 
             if ( $this->auto_render === TRUE ) {
@@ -62,8 +73,12 @@
             return parent::before();
 	}
 
-        // Check if the Current Request Is SSL ...
-        // Configure Core Protected Variables ...
+        /**
+         * Checks if the current request is SSL
+         * Configure core protected variables
+         * 
+         * @param boolean $ssl_required The HTTP request. Whether unsecured or secured HTTP.
+         */
         protected function _get_base_url( $ssl_required = FALSE ) {
 
             if( $ssl_required && isset( $_SERVER['HTTP'] ) ) {
@@ -88,7 +103,9 @@
 
         }
 
-        // Instantly Render The Template Page ...
+        /**
+         * Renders the page template
+         */
         protected function _render() {
             self::after();
             echo $this->response->body( $this->template->render() );
@@ -97,6 +114,7 @@
           
         /**
 	 * Assigns the template [View] as the request response.
+         * @return object
 	 */
 	public function after()	{
             View::set_global( 'config', $this->config );
@@ -108,11 +126,49 @@
             return parent::after();
 	}
         
+        /**
+         * Gets current URL
+         * @param bool $action Appends current action to the return value if set to TRUE
+         * @param bool $param Appends param value to the return value if set to TRUE
+         * @return string 
+         */
+        public function _get_current_url($action = FALSE, $param = FALSE) {
+            $str = '';
+            
+            if($action) {
+                if($param) {
+                    $str = $this->request->directory() . '/'. 
+                           $this->request->controller() . '/' . 
+                           $this->request->action() . '/' . 
+                           $this->request->param('id');
+                }
+                else {
+                    $str = $this->request->directory() . '/'. 
+                           $this->request->controller() . '/' . 
+                           $this->request->action();
+                }
+            }
+            else {
+               $str =  $this->request->directory() . '/'. 
+                       $this->request->controller(); 
+            }
+            
+            return $str;
+        }
+        
+        /**
+         * Encodes the json array for JSON responses
+         */
         protected function _json_encode() {
             echo json_encode( $this->json );
             exit();
         }
         
+        /**
+         * 
+         * @param string $file Filename of message file
+         * @return string 
+         */
         protected function _ajax_messages($file = '') {
             $msg = '';
 
@@ -125,7 +181,4 @@
             return substr($msg, 0, -3 );
         }
         
-        public function action_url() {
-            $this->template->body->bodyContents = URL::base(Request::current()) . Request::current()->detect_uri();
-        }
     } // End Controller_Template

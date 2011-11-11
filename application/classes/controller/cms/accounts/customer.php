@@ -1,29 +1,64 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
+/**
+ * Controller for Customer functionality of
+ * Accounts module.
+ * 
+ * @category   Controller
+ * @author     Gerona, John Michael D.
+ * @copyright  (c) 2011 DCDGLP
+ */
     class Controller_Cms_Accounts_Customer extends Controller_Cms_Accounts {
-        // entity properties
+        
+        /**
+         * @var ORM customer Holds the customer record from the DB.
+         * @access private
+         */
         private $customer;
+        
+        /**
+         * @var ORM email For ORM use as a validator for duplicate emails
+         * @access private
+         */
         private $email;
         
-        //logic properties
+        /**
+         * @var string formstatus Defines how the shared form will handle the request
+         * @access private
+         */
         private $formstatus;
         
+        /**
+         * @var int initialpagelimit Holds the default page limit from the system setting
+         */
+        private $initialpagelimit;
+
+        /**
+         * Automatically executed before the controller action.
+         * Page initialization takes place here.
+         * 
+         * @param boolean $ssl_required The HTTP request. Whether unsecured or secured HTTP.
+         */
         public function before($ssl_required = FALSE) {
             parent::before($ssl_required);
             
-            $this->leftSelection = $this->config['msg']['leftselection']['so'];
+            $this->leftSelection = $this->config['msg']['leftselection']['customer'];
         }
         
+        /**
+         * The initial page that is shown when no action is explicitly called
+         * on the URI.
+         * 
+         * @param string $status Defines how the form will act on the performed action.
+         */
         public function action_index($status = '') {
             $this->pageSelectionDesc = $this->config['msg']['page']['acctmgmt']['customer'];
             
-            // to follow nalang ang pagination
-            $this->customer = ORM::factory('customer')
-                          ->find_all();
+            // Pagination limit
+            $this->initialpagelimit = ORM::factory('systemsetting')->find();
             
-            $this->template->body->bodyContents = View::factory('cms/accounts/customer/grid')   //set yung html page
-                                                       ->set('customers', $this->customer);     // var to iterate yung customer records       
-            
+            $this->action_limit(Helper_Helper::encrypt($this->initialpagelimit->records_per_page));
+                      
             // kailangang may notification sa grid index kung successful ba yung operation
             // ng add, edit, o delete
             // lalabas yung confirmation box dun sa successful action ng user
@@ -45,6 +80,35 @@
             }
         }
         
+        /**
+         * Shows the paginated grid view
+         * @param string $limit The limit to be set to the paginator
+         */
+        public function action_limit($limit) {
+            $this->pageSelectionDesc = $this->config['msg']['page']['acctmgmt']['customer'];
+            
+            $this->template->body->bodyContents = View::factory('cms/accounts/customer/grid')   //set yung html page
+                                                       ->bind('customers', $this->customer);     // var to iterate yung customer records  
+            
+            // Display all records
+            if($limit == Constants_FormAction::ALL) {
+                $this->_pagination(ORM::factory('customer'), 'limit');
+            }
+            // Display paginated limits
+            else {
+                $this->_pagination(ORM::factory('customer'), 'limit', $limit);
+            }
+            
+            $this->customer = ORM::factory('customer')
+                                    ->order_by( 'customer_id', 'ASC' )
+                                    ->limit( $this->pagination->items_per_page )
+                                    ->offset( $this->pagination->offset )
+                                    ->find_all();
+        }
+        
+        /**
+         * Shows the add form.
+         */
         public function action_add() {
             $this->pageSelectionDesc = $this->config['msg']['actions']['newcustomer'];
             $this->formstatus = Constants_FormAction::ADD;
@@ -55,6 +119,10 @@
                                                         ->set('formStatus', $this->formstatus);
         }
         
+        /**
+         * Shows the edit form.
+         * @param string $record The record to be edited.
+         */
         public function action_edit($record = '') {
             
             //hahanapin yung record tapos...
@@ -72,6 +140,10 @@
                                                      ->set('formStatus', $this->formstatus);
         }
         
+        /**
+         * Processes the record manipulated in the shared form.
+         * @param string $record The record to be processed.
+         */
         public function action_process_form($record = '') {
             
             $flag = false; //gagamitan ng flag para hindi magulo
@@ -142,6 +214,9 @@
             $this->_json_encode();
         }
         
+        /**
+         * Deletes records from the DB.
+         */
         public function action_delete() {
             foreach( $_POST['id'] as $id ) {
                 $this->customer = ORM::factory('customer')
@@ -157,6 +232,9 @@
             $this->_json_encode();
         }
         
+        /**
+         * Enables records from the DB.
+         */
         public function action_enable() {
             foreach( $_POST['id'] as $id ) {
                 $this->customer = ORM::factory('customer')
@@ -173,6 +251,9 @@
             $this->_json_encode();
         }
         
+        /**
+         * Disables records from the DB.
+         */
         public function action_disable() {
             foreach( $_POST['id'] as $id ) {
                 $this->customer = ORM::factory('customer')
