@@ -1,0 +1,42 @@
+body {
+    background: url(images/topbg.png) top #EBEBEB repeat-x;
+    font-family: 'Segoe UI',Helvetica,sans-serif;
+}
+
+h1,h2,h3,h4,h5,h6 { margin: 3px; }
+
+/* HEADER */
+    
+#headerContainer { position: relative; min-height: 111px; padding: 7px 0;}
+#headerContainer #logoContainer { position: absolute; top:18px; }
+#headerContainer #logoContainer #logo { background-image: url(images/raimol-logo.png); width: 380px; height: 69px; display: block;}
+#headerContainer #headerNavContainer { position: absolute; bottom: 25px; right: 0; }
+#headerContainer #headerNavContainer #headerNav { font-size: 12px; font-weight: bold; }
+
+/* HEADER */
+
+/* BODY */
+
+#bodyContainer { position: relative; }
+#bodyContainer #sideBarLeft { }
+#bodyContainer #sideBarLeft #sideNav { list-style: square;}
+#bodyContainer #sideBarLeft #sideNav a { text-decoration: none; }
+#bodyContainer #sideBarLeft #sideNav a:hover { text-decoration: underline; }
+#bodyContainer #bodyContents .productBox { padding: 5px 0; }
+#bodyContainer #bodyContents .productBox .productBoxContent { background-color:#911; }
+
+/* BODY */
+
+/* FOOTER */
+
+#footerContainer { position: relative; }
+#footerContainer #footerText { text-align: right }
+
+/* FOOTER */
+
+/* UNIVERSAL */
+.list { list-style: none; padding: 0; }
+.list a { text-decoration: none; }
+.list a:hover { text-decoration: underline; }
+.horizontal li { float: left; margin: 0 5px; }
+/* UNIVERSAL */

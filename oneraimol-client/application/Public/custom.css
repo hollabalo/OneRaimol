@@ -1,0 +1,204 @@
+@charset "utf-8";
+/* CSS Document */
+
+body {
+	background:url() fixed center no-repeat ;
+}
+
+object {
+	margin-left:50px;
+}
+
+#headerWrap{
+	min-height:158px;
+	background:url(images/try3.png);
+}
+
+#spacer{
+	height:5px;
+	padding:0px;
+	margin:0px;
+}
+
+#logo{
+	height:50px;
+	text-align:center;
+}
+
+#navContainer{
+	height:25px;
+}
+
+#mainNav {
+	text-align:center;
+	margin-left:15px;
+	color:66ccff;
+}
+
+#mainNav ul li a {
+	color:#959595;
+	font-size:16px;
+	text-decoration:none;
+	text-align:center;
+}
+
+#mainNav ul li a:hover {
+	color:#91191B;
+}
+
+#mainNav ul li {
+	list-style:none;
+	float:left;
+	margin:0 8px;
+	color:#959595;
+}
+
+#topnavContainer{
+	height:25px;
+}
+
+#topNav {
+	text-align:center;
+	margin-left:15px;
+}
+
+#topNav ul li a {
+	color:#959595;
+	font-size:14px;
+	text-decoration:none;
+	text-align:center;
+}
+
+#topNav ul li a:hover {
+	color:#91191B;
+}
+
+#topNav ul li {
+	list-style:none;
+	float:right;
+	margin:0 8px;
+	color:#959595;
+}
+
+#lowerNavContainer{
+	height:25px;
+}
+
+#lowerNav{
+	margin-left:15px;
+}
+
+#lowerNav ul li a {
+	color:#959595;
+	font-size:16px;
+	text-decoration:none;
+	text-align:center;
+}
+
+#lowerNav ul li a:hover {
+	color:#91191B;
+}
+
+#lowerNav ul li {
+	list-style:none;
+	float:right;
+	margin:0 8px;
+	color:#959595;
+}
+
+#bodyWrap{
+	min-height:1000px;
+	background-color:#ebebeb;
+}
+
+#storeContainer{
+	list-style:none;
+}
+
+#storeContainer ul li{
+	list-style:square;
+}
+
+#storeContainer ul li a {
+	color:#959595;
+	font-size:12px;
+	text-decoration:none;
+	text-align:center;
+}
+
+#storeContainer ul li a:hover {
+	color:#91191B;
+}
+
+#bodynavContainer{
+	font-size:16px;
+}
+
+#bodynavContainer ul li{
+	list-style:none;
+}
+
+#bodynavContainer ul li a {
+	color:#66ccff;
+	font-size:16px;
+	text-decoration:none;
+	text-align:center;
+}
+
+#bodynavContainer ul li a:hover {
+	color:#91191B;
+}
+
+#searchContainer{
+	margin-right:5px;
+}
+
+#flashContainer {
+	text-alignment:center;
+}
+
+#leftPanel{
+	min-height:400px;
+	padding:0px;
+}
+
+#centerPanel{
+	min-height:400px;
+	padding:0px;
+}
+
+#registerContainer{
+}
+
+#loginContainer{
+	min-height:300px;
+}
+
+#rightPanel{
+	min-height:400px;
+	padding:0px
+	font-size:9px;
+	color:#959595
+}
+
+#footerWrap{
+	min-height:25px;
+	text-align:center;
+	background-color:#ebebeb;
+}
+
+.right {
+	float:right;
+}
+
+.left {
+	float:left;
+}
+
+.center {
+	text-align:center;
+}
+
+.margin {
+	margin-top:7px;
+}

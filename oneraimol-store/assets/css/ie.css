@@ -1,0 +1,47 @@
+body {
+	background:none;
+}
+
+#topMenuWrap #topMenu ul li a {
+	color:#666;
+}
+
+#topMenuWrap #topMenu ul li a:hover {
+	color:#333;
+}
+
+#topShadowWrap {
+	background:url(../images/top-bg-ie.jpg) repeat-x;
+}
+
+#logo {
+	background:url(../images/logo-square-ie.jpg) no-repeat;
+}
+
+#jilcfName {
+	background:url(../images/logo-title-ie.jpg) no-repeat;
+}
+
+#jilcfTag {
+	background:url(../images/logo-tag-ie.jpg) no-repeat;
+}
+
+#mastheadWrap, #mainNavWrap, #bodyWrap {
+	background:url(../images/body-bg-ie.jpg);
+}
+
+#mainNav {
+	background:url(../images/navbar-ie.jpg);
+}
+
+#mainNav ul li a:hover {
+	background:url(../images/topnavhover-bg-ie.jpg) repeat-x;
+}
+
+#bottomShadowWrap {
+	background:url(../images/footer-bg-ie.jpg) no-repeat;
+}
+
+#footerBoxFB p a{
+	background-image:url(../images/FB-ie.jpg);
+}

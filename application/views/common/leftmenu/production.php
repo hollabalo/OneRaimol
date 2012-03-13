@@ -1,2 +1,0 @@
-<li><a href="<?php echo $base_url . $moduleURL ?>/pbt" <?php if(isset($leftSelection) && $leftSelection == 'pbt') echo 'class="selected"'?>>production batch ticket</a></li>
-                    <li><a href="<?php echo $base_url . $moduleURL ?>/formulas" <?php if(isset($leftSelection) && $leftSelection == 'formulas') echo 'class="selected"'?>>formulas</a></li>

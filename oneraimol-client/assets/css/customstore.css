@@ -1,0 +1,129 @@
+body {
+    background: url(../images/topbg.png) top #EBEBEB repeat-x;
+    font-family: 'Segoe UI', Georgia, Serif;
+}
+
+h1,h2,h3,h4,h5,h6 { margin: 3px; }
+
+/* HEADER */
+    
+#headerContainer { position: relative; min-height: 111px; padding: 7px 0;}
+#headerContainer #logoContainer { position: absolute; top:18px; }
+#headerContainer #logoContainer #logo { background-image: url(../images/raimol-logo-invert.png); width: 380px; height: 69px; display: block;}
+#headerContainer #headerNavContainer { position: absolute; bottom: 25px; right: 0; }
+#headerContainer #headerNavContainer #headerNav { font-size: 12px; font-weight: bold; }
+
+/* HEADER */
+
+/* BODY */
+
+#bodyContainer { position: relative; }
+#bodyContainer #sideBarLeft { }
+#bodyContainer #sideBarLeft #sideNav { list-style: square;}
+#bodyContainer #sideBarLeft #sideNav a { text-decoration: none; }
+#bodyContainer #sideBarLeft #sideNav a:hover { text-decoration: underline; }
+#bodyContainer #bodyContents { font-size: 13px; }
+
+
+#bodyContainer #bodyContents .itemView { }
+#bodyContainter #bodyContents .itemView table .itemImage { }
+#bodyContainter #bodyContents .itemView table .itemDescription { }
+#bodyContainter #bodyContents .itemView table .itemDescription h3 { margin: 0 !important; }
+#bodyContainer #bodyContents .itemView #packageSizeList { }
+#bodyContainer #bodyContents .itemView #cartBox { background-color: #448BFD; min-height: 90px; }
+#bodyContainer #bodyContents .itemView #cartBox .cartInputs { padding: 0 30px; }
+#bodyContainer #bodyContents .itemView #cartBox .cartInputs table { margin: 0 0 5px 0; }
+#bodyContainer #bodyContents .itemView #cartBox .cartInputs table tr td { background: none; padding: 1px; }
+#bodyContainer #bodyContents .itemView #cartBox .cartInputs table .inputFullWidth input { width: 100%; }
+#bodyContainer #bodyContents .itemView #cartBox .cartInputs table .inputFullWidth select { width: 100%; }
+#bodyContainer #bodyContents .itemView #cartBox .cartInputs table .inputHalfWidth input { }
+#bodyContainer #bodyContents .itemView #cartBox .cartInputs table .submit { padding-top: 5px; }
+#bodyContainer #bodyContents .itemView #cartBox .cartInputs table .up { text-align:right; vertical-align:top; padding: 0; font-size: 11px;}
+/* BODY */
+
+/* FOOTER */
+
+#footerContainer { position: relative; margin: 15px 0 0 0;}
+#footerContainer #footerText { text-align: right }
+
+/* FOOTER */
+
+/* UNIVERSAL */
+.list { list-style: none; padding: 0; }
+.list a { text-decoration: none; }
+.list a:hover { text-decoration: underline; }
+.horizontal li { float: left; margin: 0 5px; }
+.right { text-align: right; }
+.fullWidth { width: 100%; }
+
+form input { width: 60%; }
+/* UNIVERSAL */
+
+
+
+/* BOX CHUCHU */
+#boxWrap {
+	color: #ececec;
+	font-size:14px;
+	height: 183px;
+}
+#boxRed {
+	background: url(../images/square.png);
+	width:258px;
+	height:183px;
+}
+#boxRedC {
+	text-align:center;
+	margin-top:50px;	
+}
+#boxGold {
+	background: url(../images/square_gold.png);
+	width:258px;
+	height:183px;
+}
+#boxGoldC {
+	text-align:center;
+	margin-top:50px;
+}	
+#boxBlack {
+	background: url(../images/square_black.png);
+	width:258px;
+	height:183px;
+}
+#boxBlackC {
+	text-align:center;
+	margin-top:50px;
+}
+/* BOX CHUCHU */
+
+/* FORM BUTTON */
+.button {
+	-moz-box-shadow:inset 0px 1px 0px 0px #f29c93;
+	-webkit-box-shadow:inset 0px 1px 0px 0px #f29c93;
+	box-shadow:inset 0px 1px 0px 0px #f29c93;
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #d12d1b), color-stop(1, #a13838) );
+	background:-moz-linear-gradient( center top, #d12d1b 5%, #a13838 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#d12d1b', endColorstr='#a13838');
+	background-color:#d12d1b;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+	border-radius:6px;
+	border:1px solid #d83526;
+	display:inline-block;
+	color:#ffffff;
+	font-family:arial;
+	font-size:12px;
+	font-weight:bold;
+	padding:6px 20px;
+	text-decoration:none;
+	text-shadow:1px 1px 0px #b23e35;
+}.buton:hover {
+	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #a13838), color-stop(1, #d12d1b) );
+	background:-moz-linear-gradient( center top, #a13838 5%, #d12d1b 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#a13838', endColorstr='#d12d1b');
+	background-color:#a13838;
+}.button:active {
+	position:relative;
+	top:1px;
+}
+/* FORM BUTTON */

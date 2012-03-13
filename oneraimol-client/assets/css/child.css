@@ -1,0 +1,500 @@
+/* CSS Document */
+/* @author Gerona, John Michael Dimapilis */
+/* @author Panganiban, John Alvin Simon */
+/* GLOBAL CHILD PAGES DEFAULTS */
+
+body {
+    margin-top: 40px;
+    font-size: 12px;
+}
+table {
+    font-size: 12px;
+}
+
+h1, h2, h3, h, h5, h6, p {
+	font-family: 'Segoe UI' !important;
+}
+
+th {
+    color: #990000;
+}
+
+h1 {
+	color: #000;
+	font-size: 26px;
+}
+
+h2 {
+	color: #333;
+	font-size: 18px;
+	font-weight: bold;
+        margin: 0;
+}
+
+/* GLOBAL CHILD PAGES DEFAULTS */
+
+#headerContainer {
+	height: 50px;	
+}
+#logoContainer {
+	background: url(../images/RAIMOLLOGOSMALL2.png) no-repeat 5px;
+	height: 50px;
+	width: 325px;
+        position: relative;
+}
+
+#logoContainer a {
+    display: block;
+    width: 170px;
+    height: 100%;
+}
+
+#headerMenuContainer {
+	float: right;
+	text-align: right;
+	min-width: 400px;
+	position: relative;
+	height: 50px;
+}
+
+#headerMenuContainer ul {
+	display: inline-block;
+	vertical-align: bottom;
+	margin: 0;
+	position: absolute;
+	right: 0px;
+	bottom: 3px;
+}
+
+#headerMenuContainer ul li{
+	float: left;
+	list-style: none;
+	font-size: 22px;
+	margin: 0 5px;
+}
+
+#topbarsettingmenu img {
+float:  left;    
+}
+#raimolLogo {
+    background-image:url(../images/RAIMOLLOGOSMALLrev.png);
+    width: 161px;
+    height: 42px;
+    padding: 0;  
+}
+
+#crumbContainer {
+	margin-left: 5em;
+	margin-top: 10px;
+}
+#crumbContainer img {
+	float: left;
+	margin: 0 5px 0 0;
+}
+#crumbContainer h1 {
+	margin-top: 10px;
+}
+#crumbContainer h1 a {
+    color: #91191c;
+}
+#crumbContainer a:hover {
+    color: #999;
+}
+
+/* LEFT BAR */
+
+#leftBar {
+	padding-left: 5px;
+	text-align: right;
+	text-transform: uppercase;
+	font-weight: bold;
+	font-size: 11px;
+}
+
+#leftBar ul li {
+	list-style: none;
+	margin: 3px 0;
+}
+
+/* LEFT BAR */
+
+#bodyContents {
+	float: right;
+}
+
+#bodyTop {
+	margin-right: 5px;
+	padding: 0;
+	position: relative;
+}
+
+#bodyTextContents {
+	padding: 0 5px 0 5px;
+}
+#bodyTextContents .pageNote {
+        color: #999999;
+}
+
+#bodyTextContents .pageDescription {
+        color: #999999;
+}
+
+#bodySearchForm {
+	display: block;
+	position: absolute;
+	right: 2px;
+}
+
+#bodySearchForm form input {
+	background-color: #ccc;
+	border: 0;
+	float: right;
+	margin: 0;
+}
+
+#bodySearchForm form label {
+	float: left;
+	width: 10%;
+	height: 19px;
+	background:url(../images/search2.png) no-repeat right;
+}
+#formMenu {
+	text-transform: lowercase;
+        margin: 0;
+}
+#formMenu div {
+    margin: 0;
+}
+#searchBox {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+#searchBox form {
+    float: right;
+    
+}
+#searchBox input {
+    background-color: #ccc;
+    border: 0;
+    margin: 0;
+}
+#searchBox .dd-box {
+    width: 150px !important;
+}
+#gridBottom {
+    margin-bottom: 8px;
+}
+#recordLimit {
+    font-size: 8pt;
+    color: #666 !important;
+}
+#recordLimit select {
+    font-size: 8pt;
+    margin: 0;
+    color: #333;
+    border: 0;
+}
+/* LINK SELECTOR */
+.selected {
+	color: #91191c;
+}
+.fullWidth {
+	width: 100%;
+}
+.dd-input {
+	width: 40%;
+	min-width: 150px;
+}
+.search {
+	margin-left: 10px;
+	width: 80%;
+}
+.fieldID {
+	font-weight: bold;
+	text-align: right;
+}
+.formButtons {
+	float: right;
+	width: 100%;
+}
+.form {
+	width: 100%;
+	min-width: 400px;
+}
+.form label {
+    font-weight: normal !important;
+}
+.form .dd-input {
+	border: 1px solid #999;
+        min-width: 200px;
+        width: 100%;
+}
+.form .dd-textarea {
+        border: 1px solid #999;
+        height: 50px;
+        width: 49%;
+        min-width: 200px;
+        width: 100%;
+        font-family: 'Segoe UI';
+        font-size: 12px;
+        background-color: #fff !important;
+}
+.form .table-section {
+        border-top: 1px solid #ccc;
+        padding-bottom: 0;
+        text-transform: capitalize;
+        font-weight: bold;
+        padding: 0 0 0 10px;
+}
+.form tr {
+	color: #000;
+}
+.form tr td {
+	border: 0;
+        vertical-align: middle;
+}
+.form tr .right {
+        text-align: right;
+        color: #333;
+}
+.form .error {
+    padding: 1px !important;
+/*    display: inline !important;*/
+    background-image: none !important;
+}
+
+.btn {
+	border: 1px solid #999;	
+}
+/* LINK SELECTOR */
+
+/* CLEARFIX */
+.clearfix:after {
+     visibility: hidden;
+     display: block;
+     font-size: 0;
+     content: " ";
+     clear: both;
+     height: 0;
+     }
+.clearfix { display: inline-block; }
+/* start commented backslash hack \*/
+* html .clearfix { height: 1%; }
+.clearfix { display: block; }
+/* close commented backslash hack */
+/* CLEARFIX */
+
+.roleList {
+    list-style: none;
+    margin: 0;
+    text-transform: uppercase;
+}
+.required {
+    font-size: 12px;
+    color: red;
+    font-weight: bold;
+    margin-right: 3px;
+}
+
+/* NOTICE MESSAGES */
+
+#msg {
+    margin: 5px 0;
+}
+
+.error,
+.alert,
+.notice,
+.success,
+.info { padding: 0.8em; margin-bottom: 1em; border: 2px solid #ddd; }
+
+.error, .alert { background: #fbe3e4; color: #8a1f11; border-color: #fbc2c4; }
+.notice        { background: #fff6bf; color: #514721; border-color: #ffd324; }
+.success       { background: #e6efc2; color: #264409; border-color: #c6d880; }
+.info          { background: #d5edf8; color: #205791; border-color: #92cae4; }
+.error a, .alert a { color: #8a1f11; }
+.notice a          { color: #514721; }
+.success a         { color: #264409; }
+.info a            { color: #205791; }
+
+.success, .notice, .error {
+    display: block;
+    padding: 0.4em 0.4em 0.4em 25px !important;
+}
+
+.success {
+    background: url(../images/check.png) no-repeat #e6efc2 5px;
+    border-color: #C6D880;
+    color: #264409;
+}
+
+.error {
+    background: url(../images/error.png) no-repeat #fbe3e4 5px;
+    border-color: #FBC2C4;
+    color: #8A1F11;
+}
+
+.notice {
+    border-color: #FFD324;
+    color: #514721;
+}
+
+.wait {
+    background: url(../images/ajax-loader.gif) no-repeat #fff6bf 5px;
+}
+
+/* END NOTICE MESSAGES */
+
+
+/* PAGINATION */
+
+#pagination {
+    margin: 0;
+}
+#pagination #paginationInner {
+    margin: 0 !important;
+}
+.box {
+    padding: 0;
+    background-color: #ccc;
+    color: #fff;
+    padding: 3px !important;
+}
+.box a {
+    display: inline-block;
+    width: 15px;
+    padding: 3px;
+    vertical-align: middle;
+    text-decoration: none;
+    color: #fff;
+}
+.box .selected {
+    display: inline-block;
+    width: 15px;
+    padding: 0;
+    vertical-align: middle;
+    text-decoration: none;
+    font-weight: bold;
+}
+/* PAGINATION */
+
+
+/* NAV BAR */
+#navLinks {
+    font-size: 14px;
+}
+#navDrop {
+    font-size: 12px;
+}
+
+/* NAV BAR */
+
+/* FORM TABLE */
+.formData {
+   /* border-top: 0 !important; */
+    padding: 0;
+}
+.borderless {
+    border-top: 0;
+}
+.border td {
+    border-top: 1px solid #DDDDDD !important;
+}
+.resetpadding tr td {
+    padding-left: 5px;
+}
+.formcontent tr td {
+    border-top: 0 !important;
+    padding: 0;
+}
+.borderless td{
+    border: 0;
+    padding: 5px;
+}
+/* FORM TABLE */
+
+/* RESET */
+.nopadding {
+    padding: 0 !important;
+}
+.nomargin {
+    margin: 0 !important;
+}
+/* RESET */
+
+/* MARGINS PADDINGS */
+.leftmargin {
+    margin-left: 10px;
+}
+.topmargin{
+    margin-top: 50px;
+}
+/* MARGINS PADDINGS */
+
+/* SIZINGS */
+.half {
+    width: 50% !important;
+}
+.quarter {
+    width: 25% !important;
+}
+.threefourths {
+    width: 75% !important;
+}
+/* SIZINGS */
+
+/* TEXT STATUS */
+.yes, .no, .pending {
+    font-weight: bold;
+}
+.yes {
+    color: #00FF00;
+}
+.no {
+    color: #FF0000;
+}
+.pending {
+    color: #FFFF00;
+}
+/* TEXT STATUS */
+
+.append-bottom {
+    padding-bottom: 5px !important;
+}
+.strong {
+    font-weight: bold;
+}
+.floatRight{
+    float:right;
+}
+.floatLeft{
+    float:left;
+}
+
+.changeFontSize {
+    font-size: 12px;
+}
+
+.changeFontColor {
+    color: #999999;
+}
+
+.redFontColor{
+    color: #990000;
+}
+
+#spacer {
+    height:50px;
+}
+
+
+/* JQUERY UI */
+#ui-datepicker-div { font-size: 10px !important; }
+/* JQUERY UI*/
+
+#limitpicker { width: 50px; }
+#filterpo { width: 100px; }
+.right { float: right; }
+
+.text-right { text-align: right; }

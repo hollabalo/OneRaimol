@@ -1,0 +1,236 @@
+@charset "utf-8";
+/* CSS Document */
+
+body {
+	background:url(../images/raimol-bg.jpg) fixed center no-repeat #e2e1e6;
+}
+
+#mainWrap {
+	
+}
+
+#header {
+	height:100px;
+}
+
+#logo {
+	background:url(../images/raimol-logo.png) no-repeat;
+	height:78px;
+}
+
+#mainNav {
+	line-height:36px;
+	text-align:center;
+	font-size:12px;
+	margin-left:15px;
+}
+
+#mainNav ul li a {
+	color:#000;
+	text-decoration:none;
+	font-size:14px;
+	text-align:center;
+}
+
+#mainNav ul li a:hover {
+	color:#91191B;
+}
+
+#mainNav ul li {
+	list-style:none;
+	float:left;
+	margin:0 8px;
+}
+
+#mainNavSearch {
+	line-height:12px;
+}	
+
+#bodyWrap {
+	min-height:400px;
+}
+
+#bodyProductTypeContainer {
+	height:400px;
+	margin-left:60px;
+}
+
+#bodyProductTypeContainer h5 {
+	font-size:18px;
+	margin-bottom:10px;
+	color:#91191B;
+	font-weight:normal;
+}
+
+#bodyProductLogo {
+/*	background:url();*/
+}
+
+#bodyProductType {
+	height:400px;
+	text-align:left;
+	font-size:12px;
+}
+
+#bodyProductType ul li {
+	width: 100%;
+	margin: 3px !important;	
+}
+
+#bodyProductType ul li a {
+	color:#000;
+	text-decoration:none;
+	font-size:14px;
+	text-align:center;
+}
+
+#bodyProductType ul li a:hover {
+	color:#91191B;
+	text-decoration:underline;
+}
+
+#bodyProductType ul li {
+	list-style:none;
+	float:left;
+	margin-bottom:10px;
+	margin-right:40px;
+}
+
+#footerWrap {
+	height:40px;
+}
+
+#footerContainer {
+	color:#000;
+	font-size:10px;
+	text-align:center;
+}
+
+#mainMenu-wrap{
+	height: 400px;
+}
+
+#mainMenu-box {
+	height: 110px;
+	background-color: #9a2c2f;
+	margin-bottom: 10px;
+	font-family: 'Segoe UI';
+	font-size: 16px;
+	text-transform: capitalize;
+}
+#mainMenu-box a {
+	text-decoration:none;
+	color:#333;
+}
+#mainMenu-box span a  {
+	display: block;
+	height: 110px;
+	width: 150px;
+}
+#mainMenu-box .list1 a {
+	background: url(../images/menu-account.png) no-repeat 65px 65px;
+}
+#mainMenu-box .list1 a:hover {
+	background: url(../images/menu-account-h.png) no-repeat 65px 65px;
+	color:#9a2c2f ;
+	background-color: #333333 ;
+}
+#mainMenu-box .list2 a {
+	background: url(../images/menu-inventory.png) no-repeat 65px 65px;
+}
+#mainMenu-box .list2 a:hover {
+	background: url(../images/menu-inventory-h.png) no-repeat 65px 65px;
+	color:#9a2c2f ;
+	background-color: #333333 ;
+}
+#mainMenu-box .list3 a {
+	background: url(../images/menu-formula.png) no-repeat 65px 65px;
+}
+#mainMenu-box .list3 a:hover {
+	background: url(../images/menu-formula-h.png) no-repeat 65px 65px;
+	color:#9a2c2f ;
+	background-color: #333333 ;
+}
+#mainMenu-box .list4 a {
+	background: url(../images/menu-signatories.png) no-repeat 65px 65px;
+}
+#mainMenu-box .list4 a:hover {
+	background: url(../images/menu-signatories-h.png) no-repeat 65px 65px;
+	color:#9a2c2f ;
+	background-color: #333333 ;
+}
+#mainMenu-box .list5 a {
+	background: url(../images/menu-tracking.png) no-repeat 65px 65px;
+}
+#mainMenu-box .list5 a:hover {
+	background: url(../images/menu-tracking-h.png) no-repeat 65px 65px;
+	color:#9a2c2f ;
+	background-color: #333333 ;
+}
+#mainMenu-box .list6 a {
+	background: url(../images/menu-reports.png) no-repeat 65px 65px;
+}
+#mainMenu-box .list6 a:hover {
+	background: url(../images/menu-reports-h.png) no-repeat 65px 65px;
+	color:#9a2c2f ;
+	background-color: #333333 ;
+}
+#totalcontainer{
+	height:400px;
+}
+#totalcontainer h5{
+	font-size:18px;
+	margin-bottom:10px;
+	color:#91191B;
+	font-weight:normal;
+}
+#boxWrap {
+	color: #ececec;
+	font-size:14px;
+	height: 183px;
+}
+#boxRed {
+	background: url(../images/square.png);
+	width:258px;
+	height:183px;
+}
+#boxRedC {
+	text-align:center;
+	margin-top:50px;	
+}
+#boxGold {
+	background: url(../images/square_gold.png);
+	width:258px;
+	height:183px;
+}
+#boxGoldC {
+	text-align:center;
+	margin-top:50px;
+}	
+#boxBlack {
+	background: url(../images/square_black.png);
+	width:258px;
+	height:183px;
+}
+#boxBlackC {
+	text-align:center;
+	margin-top:50px;
+}
+#boxShadowWrap {
+	height: 50px;
+}
+#textWrap {
+	margin:0px;
+}
+#textWrap input {
+	width:100%;
+}
+#bodyWrap table td{
+	background:none;
+}	
+.right {
+	margin-top:7px;
+}
+
+.error { display: block; }
+.notice { display: block; }

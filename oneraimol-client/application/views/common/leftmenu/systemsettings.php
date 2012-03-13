@@ -1,0 +1,2 @@
+<li><a href="<?php echo $base_url . $moduleURL ?>/stafflogs" <?php if(isset($leftSelection) && $leftSelection == 'stafflogs') echo 'class="selected"'?>>Staff Logs</a></li>
+<li><a href="<?php echo $base_url . $moduleURL ?>/rolelimit" <?php if(isset($leftSelection) && $leftSelection == 'rolelimit') echo 'class="selected"'?>>Role Limit</a></li>
