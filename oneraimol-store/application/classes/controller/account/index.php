@@ -4,9 +4,9 @@
  * Index controller for Account module.
  * 
  * @category   Controller
- * @author     Dizon, Theodore Earl G.
- * @author     Laban, John Emmanuel B.
- * @author     Panganiban, John Emmanuel B.
+ * @filesource classes/controller/account/index.php
+ * @package    OneRaimol Store
+ * @author     DCDGLP
  * @copyright  (c) 2012 DCDGLP
  */
     class Controller_Account_Index extends Controller_Account {
@@ -31,4 +31,4 @@
             
             $this->template->bodyContents = View::factory('store/accounts/dashboard');
         }
-    }
+    } // End Controller_Account_Index

@@ -6,7 +6,9 @@
  * of knowing specific access URL or system usage right/access level.
  * 
  * @category   Controller
- * @author     Gerona, John Michael D.
+ * @filesource classes/controller/store.php
+ * @package    OneRaimol Store
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Store extends Controller_Template {
@@ -76,55 +78,13 @@
          * Destroys the session and logs out user
          */
         public function action_logout() {
+            // Unset the session object
             $this->session->destroy();
             
+            // Redirect to homepage
             Request::current()->redirect(
                 URL::site( 'store' , $this->_protocol )
             );
-        }
-        
-        /**
-         * Method to limit grid record output per page
-         * @param ORM $model The model to be paginated
-         * @param string $searchmethod The controller method for pagination limiting (Default for every controller is action_limit()
-         * @param int $record The record to be shown per page
-         */
-        protected function _pagination(ORM $model, $searchmethod = NULL, $record = NULL, $customsearch = FALSE) {
-            $totalrecords = $model->find_all()->count();
-            
-            if(is_null($record)) {
-                $record = 'all';
-                
-                $this->pagination = Pagination::factory(array(
-                                        'items_per_page' => $totalrecords,
-                                        'view' => 'pagination/bootstrap',
-                                        'total_items' => $totalrecords,
-                                    ));
-            }
-            else {
-                $this->pagination = Pagination::factory(array(
-                                        'items_per_page' => Helper_Helper::decrypt($record),
-                                        'view' => 'pagination/bootstrap',
-                                        'total_items' => $totalrecords,
-                                    ));
-            }
-            
-            $this->template->body->bodyContents->pageselector = View::factory('common/pagination')
-                                                                        ->bind('pageselector', $this->pageselector)
-                                                                        ->set('recordcount', $record);
-            // The pagination request from a custom search?
-            if($customsearch) {
-               $this->template->body->bodyContents->pageselector->set('refURL', $this->_get_current_url(TRUE, TRUE));
-            }
-            // The pagination request is not a custom search
-            // Ergo, pagination of a result set without WHERE clause
-            else {
-                $this->template->body->bodyContents->pageselector->set('refURL', $this->_get_current_url())
-                                                                 ->set('searchmethod', $searchmethod );
-            }
-            
-            // Render and display the pagination links and limiters to the webpage
-            $this->pageselector = $this->pagination->render();
         }
         
         /**
@@ -136,4 +96,4 @@
             );
         }
  
-    }
+    } // End Controller_Store

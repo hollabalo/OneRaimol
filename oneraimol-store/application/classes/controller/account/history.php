@@ -4,9 +4,9 @@
  * Account history controller for Account module.
  * 
  * @category   Controller
- * @author     Dizon, Theodore Earl G.
- * @author     Laban, John Emmanuel B.
- * @author     Panganiban, John Emmanuel B.
+ * @filesource classes/controller/account/history.php
+ * @package    OneRaimol Store
+ * @author     DCDGLP
  * @copyright  (c) 2012 DCDGLP
  */
     class Controller_Account_History extends Controller_Account {
@@ -82,6 +82,7 @@
                 $this->template->bodyContents = View::factory('store/accounts/purchaseorder')
                                                         ->set('po', $this->purchaseorder);
                 
+                // Set page action message to page
                 if(($this->request->query('success')) && ($this->request->query('success') == 'true')) {
                     $this->template->bodyContents->set('success', TRUE);
                 }
@@ -105,6 +106,7 @@
                                 ->where('po_id' ,'=', Helper_Helper::decrypt($record))
                                 ->find();
 
+                // Prepare PDF binary stream
                 if($this->purchaseorder->loaded()) {
                     $filename = $this->purchaseorder->po_id_string . "--" . date("Y-m-d");
 
@@ -130,6 +132,10 @@
             }
         }
         
+        /**
+         * Receives the PO in form of verification code
+         * @param string $record The PO to be received
+         */
         public function action_receiveorder($record = '') {
             if(isset($_POST['confirmation_code'])) {
                 $this->deliveryreceipt = ORM::factory('deliveryreceipt')
@@ -143,6 +149,7 @@
                     $this->deliveryreceipt->order_receive_status = 1;
                     $this->deliveryreceipt->date_order_received = date('Y-m-d');
                     
+                    // Build email array and instance
                     if($this->deliveryreceipt->save()) {
                         // Email
                         $receive = array(
@@ -169,6 +176,7 @@
 
                         $mailer->send($message);
                         
+                        // Send to secondary email address if available
                         if(!is_null($this->deliveryreceipt->purchaseorders->customers->secondary_email)) {
                             $mailer = Swift_Mailer::newInstance(Swift_MailTransport::newInstance());
 
@@ -201,4 +209,4 @@
                 $this->_expire_page();
             }
         }
-    }
+    } // End Controller_Account_History

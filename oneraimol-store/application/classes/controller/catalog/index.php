@@ -4,9 +4,9 @@
  * Store Controller wrapper for the store subdirectory.
  * 
  * @category   Controller
- * @author     Dizon, Theodore Earl G.
- * @author     Laban, John Emmanuel B.
- * @author     Panganiban, John Emmanuel B.
+ * @filesource classes/controller/catalog/index.php
+ * @package    OneRaimol Store
+ * @author     DCDGLP
  * @copyright  (c) 2012 DCDGLP
  */
     class Controller_Catalog_Index extends Controller_Store {
@@ -38,15 +38,11 @@
             if(!is_null($record)) {
                 $count = ORM::factory('product')
                               ->where('material_category_id', '=', Helper_Helper::decrypt($record))
-//                              ->join('product_price_tb')
-//                              ->on('product_tb.product_id', '=', 'product_price_tb.product_id')
                               ->find_all()
                               ->count();
             }
             else {
                 $count = ORM::factory('product')
-//                               ->join('product_price_tb')
-//                               ->on('product_tb.product_id', '=', 'product_price_tb.product_id')
                                ->find_all()
                                ->count();
             }
@@ -62,25 +58,21 @@
             if(!is_null($record)) {
                 $this->items = ORM::factory('product')
                                   ->where('material_category_id', '=', Helper_Helper::decrypt($record))
-//                                   ->join('product_price_tb')
-//                                   ->on('product_tb.product_id', '=', 'product_price_tb.product_id')
                                   ->limit( $this->pagination->items_per_page )
                                   ->offset( $this->pagination->offset )
                                   ->find_all();
             }
             else {
                 $this->items = ORM::factory('product')
-//                                 ->join('product_price_tb')
-//                                 ->on('product_tb.product_id', '=', 'product_price_tb.product_id')
                                  ->limit( $this->pagination->items_per_page )
                                  ->offset( $this->pagination->offset )
                                  ->find_all();
             }
            
-            
+            // Set page defaults
             $this->template->bodyContents = View::factory('store/catalog/list')
                                                     ->set('items', $this->items)
                                                     ->set('pagination', $this->pagination->render());
             
         }
-    }
+    } // End Controller_Catalog_Index

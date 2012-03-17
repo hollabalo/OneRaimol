@@ -5,6 +5,8 @@
  * All application controllers extend from this controller.
  * 
  * @category   Controller
+ * @filesource classes/controller/template.php
+ * @package    OneRaimol Store
  * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
@@ -64,10 +66,13 @@
             // Gets the base_url and checks whether if it is SSL or Not ...
             $this->_get_base_url( $ssl_required );
 
+            // Gets the cofiguration paths for javascript, images, and css
             $this->config = Kohana::config( 'paths' );
             
+            // Sets the base URL to be visible for all the views
             View::set_global( 'base_url', $this->_base_url );
 
+            // Starts a session instance
             $this->session = Session::instance();
 
             return parent::before();
@@ -81,18 +86,21 @@
          */
         protected function _get_base_url( $ssl_required = FALSE ) {
 
+            // Redirects the HTTP request to secured HTTP, if SSL is required
             if( $ssl_required && isset( $_SERVER['HTTP'] ) ) {
                 Request::current()->redirect(
                     URL::base('https') . substr( $_SERVER['PATH_INFO'], 1 )
                 );
             }
 
+            // Redirects the HTTPS request to normal HTTP, if SSL is not requried
             if( ! $ssl_required && isset( $_SERVER['HTTPS'] ) ) {
                 Request::current()->redirect(
                     URL::base('http') . substr( $_SERVER['PATH_INFO'], 1 )
                 );
             }
 
+            // Sets core protected variables
             if( $ssl_required ) {
                 $this->_base_url = URL::base('https');
                 $this->_protocol = 'https';
@@ -125,51 +133,6 @@
 
             return parent::after();
 	}
-        
-        /**
-         * Gets current URL
-         * @param miced $action Appends current action to the return value if set to TRUE
-         * @param bool $param Appends param value to the return value if set to TRUE
-         * @return string 
-         */
-        public function _get_current_url($action = FALSE, $param = FALSE) {
-            $str = '';
-            
-            if($action) {
-                if(is_string($action)) {
-                    if($param) {
-                        $str = $this->request->directory() . '/'. 
-                               $this->request->controller() . '/' . 
-                               $action . '/' . 
-                               $this->request->param('id');
-                    }
-                    else {
-                        $str = $this->request->directory() . '/'. 
-                               $this->request->controller() . '/' . 
-                               $action;
-                    }
-                }
-                else {
-                    if($param) {
-                        $str = $this->request->directory() . '/'. 
-                               $this->request->controller() . '/' . 
-                               $this->request->action() . '/' . 
-                               $this->request->param('id');
-                    }
-                    else {
-                        $str = $this->request->directory() . '/'. 
-                               $this->request->controller() . '/' . 
-                               $this->request->action();
-                    }
-                }
-            }
-            else {
-               $str =  $this->request->directory() . '/'. 
-                       $this->request->controller(); 
-            }
-            
-            return $str;
-        }
         
         /**
          * Encodes the json array for JSON responses

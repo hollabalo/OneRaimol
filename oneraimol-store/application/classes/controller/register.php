@@ -6,7 +6,9 @@
  * of knowing specific access URL or system usage right/access level.
  * 
  * @category   Controller
- * @author     Gerona, John Michael D.
+ * @filesource classes/controller/register.php
+ * @package    OneRaimol Store
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Register extends Controller_Store {
@@ -57,12 +59,11 @@
             $this->customer = ORM::factory('customer');
             
             if($_POST['formstatus'] == Constants_FormAction::ADD) {
-                //kelangang itest kung used na yung username
-                //kasi diba hindi pwedeng magpareho ang username
+                // Perform check if username is already taken
                 $this->customer->where('username', '=', $_POST['username'])
                          ->find();
                 if(! $this->customer->loaded()) {
-                    //check rin for duplicate emails
+                    // Check for duplicate emails
                     $this->email = ORM::factory('customer')
                                ->where('username', 'is not', null)
                                ->and_where('primary_email', 'is not', null)
@@ -76,10 +77,11 @@
                                ->or_where('secondary_email', '=', $_POST['secondary_email'])
                                ->and_where_close()
                                ->find();
-                    //kung may nakitang record na me ganung email, fail
+                    // Set ajax to fail if email is taken
                     if($this->email->loaded()) {
                         $this->json['failmessage'] = $this->config['err']['account']['email'];
                     }
+                    // Continue to process for if no duplicates are detected
                     else {
                         $flag = true;
 
@@ -87,11 +89,13 @@
                     }
                     
                 }
+                // Username has already been taken
                 else {
                     $this->json['failmessage'] = $this->config['err']['account']['username'];
                 }
             }
 
+            // Performs all the data insert, provided that the operation process flag is true
             if($flag) {
                   $this->customer->values($_POST);
                   $this->customer->password = sha1($_POST['password']);
@@ -100,8 +104,11 @@
                   if($_POST['primary_email'] == '') $this->customer->primary_email = NULL;
                   if($_POST['secondary_email'] == '') $this->customer->secondary_email = NULL;
                   
+                  // Save record
+                  // If successful, send confirmation email
                   if($this->customer->save()) {
                       
+                        // Build the email variables and email instance
                         $registration = array(
                           'name'        => $this->customer->full_name(),
                           'confirmation'     => $this->customer->confirmation_code
@@ -120,6 +127,7 @@
                                     ->setTo(array($_POST['primary_email'] => $this->customer->full_name()))
                                     ->setBody($body, 'text/html');
 
+                        // Send mail
                         $mailer->send($message);
                         
                         $this->json['success'] = TRUE;
@@ -135,9 +143,13 @@
             $this->_json_encode();
         }
         
+        /*
+         * Shows the verification message if the first step in registration is successful
+         */
         public function action_verifymsg() {
-            
+            // Prevent logged in user from accessing this page
             if(! $this->session->get('userid')) {
+                // Check if action request is from form
                 if($this->request->query('token')) {
 
                     $this->customer = ORM::factory('customer')
@@ -145,11 +157,13 @@
                                             ->and_where('status', '=', 0)
                                             ->find();
 
+                    // If user id from token is found
                     if($this->customer->loaded()) {
                         $this->template->title = 'Registration Verification | Raimol&trade; Energized Lubricants Purchase Order Site';
                         
                         $this->template->bodyContents=View::factory('store/accounts/registration/verify');
                     }
+                    // Show expire page if user is not found
                     else {
                         Request::current()->redirect(
                             URL::site( 'expire?from='. Helper_Helper::encrypt($this->request->detect_uri()) , $this->_protocol )
@@ -157,19 +171,25 @@
                     }
 
                 }
+                // Show expire pages if action request is not from form submit
                 else {
                     $this->_expire_page();
                 } 
             }
+            // Show expire page instead
             else {
                 $this->_expire_page();
             }
             
         }
         
+        /**
+         * Shows the success page if registration verification is successful
+         */
         public function action_success() {
-            
+            // Page access, not logged in only
             if(! $this->session->get('userid')) {
+                // Action request is from form
                 if($this->request->query('token')) {
 
                     $this->customer = ORM::factory('customer')
@@ -183,22 +203,29 @@
                         
                         $this->template->bodyContents=View::factory('store/accounts/registration/success');
                     }
+                    // Show expire page if record not found
                     else {
                         $this->_expire_page();
                     }
 
                 }
+                // Show expire page if action request is not from form
                 else {
                     $this->_expire_page();
                 } 
             }
+            // Show expire page to logged in users
             else {
                 $this->_expire_page();
             }
         }
         
+        /**
+         * Verifies the registration so the final step of registration can be processed.
+         * @param string $record The record to be verified
+         */
         public function action_verify($record = '') {
-            
+            // Argument must not be null
             if($record != '') {
                 
                 $this->customer = ORM::factory('customer')
@@ -244,17 +271,17 @@
 
                         $mailer->send($message);
                     }
-                    
+                    // Redirect to success page
                     Request::current()->redirect(
                         URL::site( 'register/success?token='. Helper_Helper::encrypt($this->customer->pk()) , $this->_protocol )
                     );
                     
                 }
+                // Throw an exception
                 else {
                     throw new HTTP_Exception_404('Record not loaded');
                 }
-                
-                
+            // Throw an exception
             }
             else {
                 throw new HTTP_Exception_404('No param');
@@ -262,4 +289,4 @@
             
         }
         
-    }
+    } // End Controller_Register

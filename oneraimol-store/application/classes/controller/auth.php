@@ -4,7 +4,9 @@
  * Controller for Public side authentication of OneRaimol.
  * 
  * @category   Controller
- * @author     Gerona, John Michael D.
+ * @filesource classes/controller/auth.php
+ * @package    OneRaimol Store
+ * @author     DCDGLP
  * @copyright  (c) 2012 DCDGLP
  */
     class Controller_Auth extends Controller_Store {
@@ -15,6 +17,12 @@
          */
         protected $user;
         
+        /**
+         * Automatically executed before the controller action.
+         * Page initialization takes place here.
+         * 
+         * @param boolean $ssl_required The HTTP request. Whether unsecured or secured HTTP.
+         */  
         public function before($ssl_required = FALSE) {
             parent::before($ssl_required);
             
@@ -41,7 +49,8 @@
          * Checks the login information entered in the form to the DB.
          */
         public function action_process_login() {
-            
+            // Set redirect URL if login process is not requested
+            // directly from the main auth page
             if(isset($_GET['source'])) {
                 $source = Helper_Helper::decrypt($_GET['source']);
                 $this->json['redirect'] = TRUE;
@@ -54,7 +63,7 @@
                         ->find();
             
             if($this->user->loaded()) {
-                
+                // Prevent login if status is inactive
                 if($this->user->status == 1) {
                     // Set user to session
                     $this->session->set('userid', Helper_Helper::encrypt($this->user->customer_id));
@@ -72,7 +81,7 @@
                 $this->json['success'] = false;
                 $this->json['failmessage'] = $this->config['err']['login']['fail'];
             }
-            
+            // Encode result to JSON data
             $this->_json_encode();
         }
         
@@ -81,6 +90,7 @@
          * @param string $record The account to be checked
          */
         public function action_resend($record = '') {
+            // Accept only if $record is supplied in URL
             if($record != '') {
                 if(!$this->session->get('userid')) {
 
@@ -89,8 +99,9 @@
                                          ->find();
                     
                     if($this->user->loaded()) {
+                        // Prevent further proccessing if action request is not from form submit
                         if($this->request->query('e')) {
-                            
+                            // Build the resend code array and mail instance
                             if(Helper_Helper::decrypt($this->request->query('e')) == $this->user->primary_email) {
                                 $registration = array(
                                   'name'        => $this->user->full_name(),
@@ -112,28 +123,32 @@
 
                                 $mailer->send($message);
                                 
+                                // Redirect to success page
                                 Request::current()->redirect(
                                     URL::site( 'auth/resendsuccess?e=' . Helper_Helper::encrypt($this->user->pk()) , $this->_protocol )
                                 );
                             }
+                            // Throw an exception
                             else {
                                 throw new HTTP_Exception_404('Invalid email');
-                            }
-                            
+                            } 
                         }
+                        // Throw an exception
                         else {
                             throw new HTTP_Exception_404('Get variable e not present');
                         }
                     }
+                    // Throw an exception
                     else {
                         throw new HTTP_Exception_404('User not found');
                     }
-                    
                 }
+                // Throw an exception
                 else {
                     throw new HTTP_Exception_404('User logged in');
                 }
             }
+            // Throw an exception
             else {
                 throw new HTTP_Exception_404('No argument specified');
             }
@@ -143,7 +158,7 @@
          * Shows the resend success page if resend is successful.
          */
         public function action_resendsuccess() {
-            
+            // Allow access if redirect is processed from action
             if($this->request->query('e')) {
                 
                 $a = ORM::factory('customer')
@@ -157,11 +172,12 @@
 
                     $this->template->bodyContents = View::factory('store/accounts/registration/resend');
                 }
+                // Show expire page instead
                 else {
                     $this->_expire_page();
                 }
-                
             }
+            // Show expire page instead
             else {
                 $this->_expire_page();
             }
@@ -175,6 +191,7 @@
                 $this->template->title = 'Forgot Password | Raimol&trade; Energized Lubricants Purchase Order Site';
                 $this->template->bodyContents = View::factory('store/accounts/forgotpassword/index');
             }
+            // Show expire page instead
             else {
                 $this->_expire_page();
             }
@@ -185,6 +202,7 @@
          * Processes the forgot password form
          */
         public function action_process_preparereset() {
+            // Prevent further processing if not from form submission
             if(isset($_POST['email'])) {
                 
                 $this->user = ORM::factory('customer')
@@ -192,11 +210,13 @@
                                     ->find();
                 
                 if($this->user->loaded()) {
+                    // Check if user is active
                     if($this->user->status == 1) {
                         $this->user->confirmation_code = Helper_Helper::encrypt(time()) . Helper_Helper::encrypt($this->user->username);
 
                         $this->user->save();
 
+                        // Build email array and email sender instance
                         $reset = array(
                           'name'        => $this->user->full_name(),
                           'confirmation'    => $this->user->confirmation_code
@@ -234,6 +254,7 @@
                 $this->_json_encode();
                 
             }
+            // Throw page not found exception
             else {
                 throw new HTTP_Exception_404('No email in post variable');
             }
@@ -244,7 +265,7 @@
          * @param string $record The account to be password reset
          */
         public function action_resetpassword($record = '') {
-            
+            // Prevent no argument controller request
             if($record != '') {
                 
                 $this->user = ORM::factory('customer')
@@ -258,25 +279,29 @@
                                                              ->set('token', $record);
                     
                 }
+                // Show expire page instead
                 else {
                     $this->_expire_page();
                 }
-                
             }
+            // Page not found exception
             else {
                 throw new HTTP_Exception_404('No record on parameter');
             }
-            
         }
         
+        /**
+         * Processes the password reset of an account
+         * @param string $record The account to be password reset
+         */
         public function action_process_resetpassword($record) {
-            
+            // Form submission only!
             if(isset($_POST['password'])) {
                 
                 $this->user = ORM::factory('customer')
                                      ->where('confirmation_code', '=', $record)
                                      ->find();
-                
+                // Update request status to DB and build email array and instance
                 if($this->user->loaded()) {
                     
                     $this->user->password = sha1($_POST['password']);
@@ -304,6 +329,7 @@
 
                     $mailer->send($message);
                     
+                    // Send also to secondary email if present
                     if(!is_null($this->user->secondary_email) && $this->user->secondary_email != '') {
                         $mailer = Swift_Mailer::newInstance(Swift_MailTransport::newInstance());
 
@@ -322,15 +348,14 @@
                     $this->json['success'] = TRUE;
                     $this->_json_encode();
                 }
+                // Show expire page instead
                 else {
                     $this->_expire_page();
                 }
-                
             }
+            // Page not found
             else {
                 throw new HTTP_Exception_404('No password on post variable');
             }
-            
         }
-        
-    }
+    } // End Controller_Auth

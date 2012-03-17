@@ -4,16 +4,16 @@
  * Account info controller for Account module.
  * 
  * @category   Controller
- * @author     Dizon, Theodore Earl G.
- * @author     Laban, John Emmanuel B.
- * @author     Panganiban, John Emmanuel B.
+ * @filesource classes/controller/account/info.php
+ * @package    OneRaimol Store
+ * @author     DCDGLP
  * @copyright  (c) 2012 DCDGLP
  */
     class Controller_Account_Info extends Controller_Account {
        
         /**
          * Also holds the customer record from the database.
-         * (Confusion haha)
+         * (Confusion )
          * @var ORM 
          */
         private $customer;
@@ -56,7 +56,7 @@
          */
         public function action_process_form() {
             
-            $flag = false; //gagamitan ng flag para hindi magulo
+            $flag = false; // success flag if success processing
             
             $this->customer = ORM::factory('customer');
             
@@ -125,7 +125,7 @@
                 
             }
            
-            //kung walang error
+            // Insert to DB if no error in processing
             if($flag) {
 
                 $this->customer->values($_POST);
@@ -135,20 +135,18 @@
                 
                 $this->json['success'] = true;
             }
-            //may mga error na nadetect
+            // Errors detected
             else {
                 $this->json['success'] = false;
             }
 
-            //since ajax ang method ng pagssubmit ng form, kelangang pasahan ng
-            //json encoded message yung page para mamanipulate thru javascript yung
-            //gagawin ng form kapag nasubmit na yung form
+            // Encode to JSON
             $this->_json_encode();
             
         }
         
         /**
-         * 
+         *  Show change password form
          */
         public function action_changepassword() {
             $this->template->bodyContents = View::factory('store/accounts/changepassword/customer-form')
@@ -163,7 +161,7 @@
         }
         
         /**
-         * 
+         * Processes the change password form
          */
         public function action_process_changepassword() {
                 $this->json['action'] = Constants_FormAction::EDIT;
@@ -177,10 +175,12 @@
 
                 $flag = true;
 
+                // Change the password
                 if( $this->customer->loaded() ) {
                         if( $this->customer->password == sha1($old_password) ) {
                             $this->customer->password = sha1($_POST['password']);
                             
+                            // Prepare success email and instance
                             if($this->customer->save()) {
                                 
                                 $changepass = array(
@@ -205,6 +205,7 @@
 
                                 $mailer->send($message);
                                 
+                                // Send also to secondary email
                                 if(!is_null($this->customer->secondary_email) && ($this->customer->secondary_email != '')) {
                                     $mailer = Swift_Mailer::newInstance(Swift_MailTransport::newInstance());
 
@@ -229,8 +230,8 @@
                             $this->json['failmessage'] = $this->config['err']['account']['password'];
                         }
                 }
-                
+                // Encode to JSON for ajax
                 $this->_json_encode();
         }
         
-    }
+    } // End Controller_Account_Info

@@ -4,9 +4,9 @@
  * Address controller for Account module.
  * 
  * @category   Controller
- * @author     Dizon, Theodore Earl G.
- * @author     Laban, John Emmanuel B.
- * @author     Panganiban, John Emmanuel B.
+ * @filesource classes/controller/account/addresses.php
+ * @package    OneRaimol Store
+ * @author     DCDGLP
  * @copyright  (c) 2012 DCDGLP
  */
     class Controller_Account_Addresses extends Controller_Account {
@@ -55,11 +55,12 @@
                               ->order_by('delivery_address_id', 'DESC')
                               ->find_all();
             
-            
+            // Set page defaults
             $this->template->bodyContents = View::factory('store/accounts/address/grid')
                                                     ->set('addresses', $this->address)
                                                     ->set('pagination', $this->pagination);
             
+            // Show appropriate page action
             if($this->request->query('action')) {
                 if($this->request->query('action') == Constants_FormAction::ADD &&
                    $this->request->query('success') == 'true') {
@@ -179,4 +180,4 @@
             }
             
         }
-    }
+    } // End Controller_Account_Addresses

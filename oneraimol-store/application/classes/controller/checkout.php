@@ -4,7 +4,9 @@
  * Controller for Admin side authentication of OneRaimol.
  * 
  * @category   Controller
- * @author     Gerona, John Michael D.
+ * @filesource classes/controller/checkout.php
+ * @package    OneRaimol Store
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Checkout extends Controller_Store {
@@ -21,16 +23,25 @@
          */
         private $poitems;
         
+        /**
+         * Automatically executed before the controller action.
+         * Page initialization takes place here.
+         * 
+         * @param boolean $ssl_required The HTTP request. Whether unsecured or secured HTTP.
+         */        
         public function before($ssl_required = FALSE) {
             parent::before($ssl_required);
                     
+            // Prevent access if cart is empty
             if(! $this->session->get('items')) {
                 
+                // Reset cart only after generating PDF
                 if($this->request->action() == 'generatepdf') {
                     if(! $this->session->get('po_id')) {
                         $this->_expire_page();
                     }
                 }
+                // Redirect to catalog if cart is already reset
                 else {
                     Request::current()->redirect(
                         URL::site( 'catalog' , $this->_protocol )
@@ -52,7 +63,7 @@
                               ->where('customer_id', '=', Helper_Helper::decrypt($this->session->get('userid')))
                               ->find();
         
-            // Prevents page access if session is active
+            // Set page defaults
             $this->template->bodyContents = View::factory('store/checkout/shippingoptions')
                                                    ->set('items', $this->session->get('items'))
                                                    ->set('product', ORM::factory('productprice'))
@@ -64,7 +75,7 @@
          * Order is not placed in the database until it is confirmed
          */
         public function action_place() {
-
+            // Build the array for cart items
             $array = array(
                          'po_id_string' => Helper_Helper::set_pk(Constants_DocType::PURCHASE_ORDER),
                          'customer_id' => Helper_Helper::decrypt($this->session->get('userid')),
@@ -79,6 +90,7 @@
                          'order_amount' => $_POST['order_amount']
             );
             
+            // Set cart array to session
             $this->session->set('purchaseorder', $array);
             
             $this->json['success'] = TRUE;
@@ -101,7 +113,8 @@
             $shipping = ORM::factory('deliveryaddress')
                                   ->where('delivery_address_id', '=', $array['delivery_address_id'])
                                   ->find(); 
-             
+            
+            // Set page defaults
             $this->template->bodyContents = View::factory('store/checkout/confirm')
                                                     ->set('user', $this->user)
                                                     ->set('product', ORM::factory('productprice'))
@@ -115,7 +128,7 @@
          * system for company review and approval. (System Client side)
          */
         public function action_process_checkout() {
-            
+            // Prevent any other action access only from form submission with cart items present
             if(isset($_GET['fromconfirm']) && $this->session->get('items') && $this->session->get('purchaseorder')) {
                 // Gets the ordering user
                 $this->user = ORM::factory('customer')
@@ -152,21 +165,25 @@
                         $this->product->clear();
                     }
                    
+                    // Set page defaults
                     $this->template->title = 'Purchase Order Success | Raimol&trade; Energized Lubricants Purchase Order';
                     
                     $this->template->bodyContents = View::factory('store/checkout/success');
                 }
 
-                // Reset carts
+                // Reset cart
                 $this->session->delete('items');
                 
-                //shrek the po id
+                // Set the po id
                 $this->session->set('po_id', $this->purchaseorder->pk());
                 $this->session->set('po_id_string', $this->purchaseorder->po_id_string);
             }
             
         }
         
+        /**
+         * Generates PDF report of purchase order transaction
+         */
         public function action_generatepdf() {
             require Kohana::find_file('vendor/dompdf', 'dompdf/dompdf_config.inc');
             
@@ -174,6 +191,7 @@
                             ->where('po_id' ,'=', $this->session->get_once('po_id'))
                             ->find();  
             
+            // Prepare PDF binary stream if purchase order is successfully inserted to DB
             if($this->purchaseorder->loaded()) {
                 $filename = $this->purchaseorder->po_id_string . "--" . date("Y-m-d");
 
@@ -193,4 +211,4 @@
  
         }
         
-    }
+    } // End Controller_Checkout

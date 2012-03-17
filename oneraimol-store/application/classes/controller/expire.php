@@ -1,10 +1,12 @@
 <?php defined('SYSPATH') or die('No direct script access.');
 
 /**
- * Static controller for about page.
+ * Static controller for expire page
  * 
  * @category   Controller
- * @author     Gerona, John Michael D.
+ * @filesource classes/controller/template.php
+ * @package    OneRaimol Store
+ * @author     DCDGLP
  * @copyright  (c) 2012 DCDGLP
  */
     class Controller_Expire extends Controller_Store {
@@ -18,6 +20,7 @@
         public function before($ssl_required = FALSE) {
             parent::before($ssl_required);
             
+            // Prevent direct access without the GET variable FROM
             if(! $this->request->query('from')) {
                 Request::current()->redirect(
                     URL::site( '/' , $this->_protocol )
@@ -25,6 +28,7 @@
             }
         }
         
+        // Set page defaults
         public function action_index() {
            
             $this->template->title = 'Page Expired | Raimol&trade; Energized Lubricants Purchase Order';
@@ -33,4 +37,4 @@
                                                       ->set('url', Helper_Helper::decrypt($this->request->query('from')));
             
         }
-    }
+    } // End Controller_Expire
