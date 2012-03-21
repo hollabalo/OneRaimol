@@ -11,3 +11,6 @@ In line with this, the study aims to bring Rainchem International Inc., the conc
 1. Unpack the files to C:\xampp\htdocs.
 2. Import the database script found on the database folder on the root.
 3. The files are now ready for further development.
+
+
+<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/ph/"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/ph/88x31.png" /></a><br /><span xmlns:dct="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/InteractiveResource" property="dct:title" rel="dct:type">OneRaimol</span> by <span xmlns:cc="http://creativecommons.org/ns#" property="cc:attributionName">Dela Cruz, Dizon, Gerona, Laban, Panganiban</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/ph/">Creative Commons Attribution-ShareAlike 3.0 Philippines License</a>.
