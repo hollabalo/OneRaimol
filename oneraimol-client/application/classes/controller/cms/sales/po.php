@@ -4,7 +4,9 @@
  * Controller for Purchase Orders of Sales module
  * 
  * @category   Controller
- * @author     Gerona, John Michael D.
+ * @filesource classes/controller/cms/sales/po.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Cms_Sales_Po extends Controller_Cms_Sales {
@@ -163,9 +165,7 @@
         public function action_add() {
             $this->pageSelectionDesc = $this->config['msg']['actions']['newpo'];
             $this->formstatus = Constants_FormAction::ADD;
-            //since iisang form lang ang ginagamit sa add at edit, kelangan lang
-            //bigyan ng state yung form kung add o edit ba sya,
-            //kaya yun ang trabaho ng formStatus
+            // Set HTML
             $this->template->body->bodyContents = View::factory('cms/sales/po/form')
                                                         ->set('formStatus', $this->formstatus)
                                                         ->bind('customers', $this->customers)
@@ -219,19 +219,15 @@
             $this->purchaseorder = ORM::factory('po');
             
             
-            //security na rin kaya specified yung condition since
-            //kung may kumag na user na maalam sa mga ganto, pwede nyang palitan ang value
-            //ng formstatus na hidden field dun sa form
+            // If form submit is from ADD
             if($_POST['formstatus'] == Constants_FormAction::ADD) {
-
-//                $this->purchaseorder->where('po_id', '=', $_POST['po_id_encrypt'])
-//                         ->find();
                 
                $flag = true;
                $this->json['action']=Constants_FormAction::ADD;
                               
           
             }
+            // If from EDIT
             else if($_POST['formstatus'] == Constants_FormAction::EDIT) {
                 $this->purchaseorder->where('po_id', '=', Helper_Helper::decrypt($record))
                          ->find();
@@ -239,6 +235,7 @@
                 $flag = true;
                 $this->json['action'] = Constants_FormAction::EDIT;
             }
+            // If from APPROVE
             else if($_POST['formstatus'] == Constants_FormAction::APPROVE) {
                 $this->purchaseorder->where('po_id', '=', Helper_Helper::decrypt($record))
                          ->find();
@@ -246,9 +243,11 @@
                 $flag = true;
                 $this->json['action'] = Constants_FormAction::APPROVE;
             }
+            // No errors detected
              if($flag) {
                 if($_POST['formstatus'] == Constants_FormAction::ADD) {
                     $this->purchaseorder->values($_POST);
+                    $this->purchaseorder->order_date = date('Y-m-d');
                     $this->purchaseorder->terms = $_POST['terms'] . " Days";
                     //$this->purchaseorder->customer_id = $_POST['id'];
                     $this->purchaseorder->date_created = date("Y-m-d");
@@ -279,10 +278,10 @@
                                     ->where('um_id', '=', $uom[$id])
                                     ->find();
                         if(is_null($unitmat->box_per_sku)){
-                            $totalcost+= ($unit_price[$id] * 1) * $qty[$id];
+                            $totalcost+= ($unit_price[$id] * $unitmat->size_liters) * $qty[$id];
                         }
                         else{
-                            $totalcost+= ($unit_price[$id] * $unitmat->box_per_sku) * $qty[$id];
+                            $totalcost+= (($unit_price[$id] * $unitmat->size_liters) * $unitmat->box_per_sku) * $qty[$id];
                         }
                         
                             
@@ -311,9 +310,7 @@
             else {
                 $this->json['success'] = false;
             }          
-            //since ajax ang method ng pagssubmit ng form, kelangang pasahan ng
-            //json encoded message yung page para mamanipulate thru javascript yung
-            //gagawin ng form kapag nasubmit na yung form
+            // JSON to AJAX
             $this->_json_encode();
         }
         
@@ -377,20 +374,20 @@
                                 $tax_amount = '';
                                 $type_tax = '';
                                 if($this->purchaseorder->deliveryaddresses->type_address == "Economic Processing Zone"){
-                                    $amount = $result->variants->price / 1.12;
-                                    $gross_amount = $result->variants->price;
+                                    $gross_amount = (($result->variants->price * $result->variants->package_size) * $result->variants->sku) * $result->qty;
+                                    $amount =$gross_amount / 1.12;
                                     $tax_amount = $gross_amount - $amount;
                                     $type_tax = Constants_Tax::VAT;
                                 }
                                 else if ($this->purchaseorder->deliveryaddresses->type_address == "Non-Economic Processing Zone") {
-                                    $amount = $result->variants->price;
-                                    $gross_amount = $result->variants->price;
+                                    $gross_amount = (($result->variants->price * $result->variants->package_size) * $result->variants->sku) * $result->qty;
+                                    $amount = $gross_amount;
                                     $tax_amount = $gross_amount - $amount;
                                     $type_tax = Constants_Tax::NON_VAT;
                                 }
                                 else if ($this->purchaseorder->deliveryaddresses->type_address == "Zero Rated Processing Zone") {
-                                    $amount = $result->variants->price;
-                                    $gross_amount = $result->variants->price;
+                                    $gross_amount = (($result->variants->price * $result->variants->package_size) * $result->variants->sku) * $result->qty;
+                                    $amount = $gross_amount;
                                     $tax_amount = $gross_amount - $amount;
                                     $type_tax = Constants_Tax::TAX_EXEMPT;
                                 }
@@ -432,13 +429,26 @@
                                 $tax_amount = '';
 
                                 if($_POST['tax'][$ctr] == Constants_Tax::VAT) {
-                                    $amount = $item->unit_price / 1.12;
-                                    $gross_amount = $item->unit_price;
+                                    if(!is_null($item->unitmaterials->box_per_sku)) {
+                                        $gross_amount = (($item->unit_price * $item->unitmaterials->size_liters) * $item->unitmaterials->box_per_sku) * $item->qty;
+                                        $amount = $gross_amount / 1.12;
+                                    }
+                                    else {
+                                        $gross_amount = ($item->unit_price * $item->unitmaterials->size_liters) * $item->qty;
+                                        $amount = $gross_amount / 1.12;
+                                    }
                                     $tax_amount = $gross_amount - $amount;
                                 }
                                 else if ($_POST['tax'][$ctr] == Constants_Tax::NON_VAT || $_POST['tax'][$ctr] == Constants_Tax::TAX_EXEMPT ){
-                                    $amount = $item->unit_price;
-                                    $gross_amount = $item->unit_price;
+                                    if(!is_null($item->unitmaterials->box_per_sku)) {
+                                        $gross_amount = (($item->unit_price * $item->unitmaterials->size_liters) * $item->unitmaterials->box_per_sku) * $item->qty;
+                                        $amount = $gross_amount;
+                                    }
+                                    else {
+                                        $gross_amount = ($item->unit_price * $item->unitmaterials->size_liters) * $item->qty;
+                                        $amount = $gross_amount;
+                                    }
+                                    
                                     $tax_amount = $gross_amount - $amount;
                                 }
 
@@ -533,61 +543,11 @@
         }
         
         /**
-         * Makes a search then populates the result
-         * into the data grid.
-         * @param string $record The search keyword
-         * @param string $limit Number of search result records per page
-         */
-        public function action_search($record, $limit = NULL) {
-            $this->pageSelectionDesc = $this->config['msg']['actions']['search'] . $this->config['msg']['page']['sales']['po'];
-            
-            $this->template->body->bodyContents = View::factory('cms/sales/po/grid');
-            
-            // Gotta be immune from SQL injection attacks. :)
-            $this->purchaseorder = ORM::factory('po');
-            
-            // Build the search conditions based on the selected criteria from the form
-            if(0 == Constants_FormAction::COMPANY) {
-                $this->purchaseorder->where('po_id', 'LIKE', $record . '%');
-            }
-//            else if($_POST['searchtype'] == Constants_FormAction::ORDER_DATE) {
-//                $this->salesorder->where('purchase_order_tb.order_date', 'LIKE', $record);
-//            }
-//            else if($_POST['searchtype'] == Constants_FormAction::DELIVERY_DATE) {
-//                $this->salesorder->where('purchase_order_tb.delivery_date', 'LIKE', $record);
-//            }
-//            
-//            
-//            if($_POST['approvefilter'] == Constants_FormAction::APPROVE) {
-//                if(is_array($this->session->get('roles'))) {
-//                    
-//                }
-//                else {
-//                    
-//                }
-//            }
-//            else if($_POST['approvefilter'] == Constants_FormAction::DISAPPROVE) {
-//                $this->salesorder->and_where('', '=', '');
-//            }
-            
-            // Paginate the result set
-            $this->action_limit($limit, $this->purchaseorder);
-            
-            // Set offset and item per page from the pagination object
-            $this->purchaseorder->order_by( 'po_id', 'ASC' )
-                             ->limit( $this->pagination->items_per_page )
-                             ->offset( $this->pagination->offset );
-            
-            $this->template->body->bodyContents->set('purchaseorder', $this->purchaseorder->find_all());
-             
-        }
-        /**
-         * Shows the edit form.
-         * @param string $record The record to be edited.
+         * View report
+         * @param string $record The record to be viewed.
          */
         public function action_viewreport($record = '') {
             
-            //hahanapin yung record tapos...
             $this->purchaseorder = ORM::factory('po')
                             ->where('po_id' ,'=', Helper_Helper::decrypt($record))
                             ->find();  
@@ -595,13 +555,16 @@
             $this->pageSelectionDesc = $this->config['msg']['actions']['viewpo'] . $this->purchaseorder->po_id_string;
             $this->formstatus = Constants_FormAction::VIEW;
             
-            //..tapos iloload sa variable na visible sa view, $customer
-            //may formStatus rin
+            // Set HTML
             $this->template->body->bodyContents = View::factory('cms/reports/sales/po/viewreport')
                                                      ->set('purchaseorder', $this->purchaseorder)
                                                      ->set('formStatus', $this->formstatus);
         }
         
+        /**
+         * Generates PDF 
+         * @param string $record The record to be PDF generated
+         */
         public function action_generatepdf($record = '') {
             require Kohana::find_file('vendor/dompdf', 'dompdf/dompdf_config.inc');
             
@@ -626,7 +589,7 @@
         }
         
         /**
-         * 
+         * Masterfile page
          * @param string $record The record to be edited.
          */
         public function action_masterfile($record = '') {
@@ -639,8 +602,7 @@
             $this->pageSelectionDesc = '';
             $this->formstatus = Constants_FormAction::VIEW;
             
-            //..tapos iloload sa variable na visible sa view, $customer
-            //may formStatus rin
+            // Set HTML
             $this->template->body->bodyContents = View::factory('cms/reports/sales/masterfile/viewreport')
                                                      ->set('purchaseorder', $this->purchaseorder)
                                                      ->set('formStatus', $this->formstatus);

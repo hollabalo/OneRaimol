@@ -5,7 +5,9 @@
  * Sales module.
  * 
  * @category   Controller
- * @author     Dizon, Theodore Earl G.
+ * @filesource classes/controller/cms/sales/so.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Cms_Sales_So extends Controller_Cms_Sales {
@@ -49,13 +51,7 @@
             
             $this->action_limit(Helper_Helper::encrypt($this->initialpagelimit->records_per_page));
             
-            // Display the searchbox on the top bar
-//            $this->template->header->searchbox = $this->_get_current_url('search');
-                      
-            // kailangang may notification sa grid index kung successful ba yung operation
-            // ng add, edit, o delete
-            // lalabas yung confirmation box dun sa successful action ng user
-            // try mong magadd, edit, yung delete wala pa
+            // Display appropritae page responses
             if(Helper_Helper::decrypt($status) == Constants_FormAction::ADD) {
                 $this->template->body->bodyContents->success = 'created';
             }
@@ -115,16 +111,6 @@
                                         ->offset( $this->pagination->offset )
                                         ->find_all();
                 
-//                $this->salesorder = DB::select('purchase_order_tb.*', 'purchase_order_item_tb.*', 'sales_order_tb.*', array(DB::expr('COUNT(purchase_order_item_tb.po_id)'), 'total_items'))
-//                                        ->from('purchase_order_tb')
-//                                        ->join('purchase_order_item_tb')
-//                                        ->on('purchase_order_item_tb.po_id', '=', 'purchase_order_tb.po_id')
-//                                        ->join('sales_order_tb')
-//                                        ->on('sales_order_tb.po_id', '=', 'purchase_order_tb.po_id')
-//                                        ->group_by('purchase_order_item_tb.po_id')
-//                                        ->where('dr_id', '=', NULL)
-//                                        ->as_object()
-                                   //     ->execute();
             }
         }
         
@@ -161,9 +147,7 @@
         public function action_add() {
             $this->pageSelectionDesc = $this->config['msg']['actions']['newso'];
             $this->formstatus = Constants_FormAction::ADD;
-            //since iisang form lang ang ginagamit sa add at edit, kelangan lang
-            //bigyan ng state yung form kung add o edit ba sya,
-            //kaya yun ang trabaho ng formStatus
+            // Set HTML
             $this->template->body->bodyContents = View::factory('cms/accounts/customer/form')
                                                         ->set('formStatus', $this->formstatus);
         }
@@ -173,8 +157,6 @@
          * @param string $record The record to be edited.
          */
         public function action_edit($record = '') {
-            
-            //hahanapin yung record tapos...
             $this->customer = ORM::factory('customer')
                             ->where('customer_id' ,'=', Helper_Helper::decrypt($record))
                             ->find();
@@ -183,8 +165,7 @@
             $this->pageSelectionDesc = $this->config['msg']['actions']['editcustomer'];
             $this->formstatus = Constants_FormAction::EDIT;
             
-            //..tapos iloload sa variable na visible sa view, $customer
-            //may formStatus rin
+            // Set HTML
             $this->template->body->bodyContents = View::factory('cms/accounts/customer/editform')
                                                      ->set('customer', $this->customer)
                                                      ->set('formStatus', $this->formstatus);
@@ -200,9 +181,7 @@
             
             $this->customer = ORM::factory('customer');
             
-            //security na rin kaya specified yung condition since
-            //kung may kumag na user na maalam sa mga ganto, pwede nyang palitan ang value
-            //ng formstatus na hidden field dun sa form
+            // If form submit is from ADD
             if($_POST['formstatus'] == Constants_FormAction::ADD) {
                 //kelangang itest kung used na yung username
                 //kasi diba hindi pwedeng magpareho ang username

@@ -5,7 +5,9 @@
  * Inventory module.
  * 
  * @category   Controller
- * @author     Dizon, Theodore Earl G.
+ * @filesource classes/controller/cms/inventory/suppliersupplies.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Cms_Inventory_SupplierSupplies extends Controller_Cms_Inventory {

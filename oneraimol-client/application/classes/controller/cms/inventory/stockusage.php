@@ -5,7 +5,9 @@
  * Inventory module.
  * 
  * @category   Controller
- * @author     Dizon, Theodore Earl G.
+ * @filesource classes/controller/cms/inventory/stockusage.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Cms_Inventory_Stockusage extends Controller_Cms_Inventory {
@@ -134,6 +136,10 @@
                                                      ->set('stock', $record);
         }
         
+        /**
+         * Generates PDF
+         * @param string $record The record
+         */
         public function action_generatepdf($record = '') {
             require Kohana::find_file('vendor/dompdf', 'dompdf/dompdf_config.inc');
             

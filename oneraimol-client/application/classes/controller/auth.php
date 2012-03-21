@@ -4,7 +4,9 @@
  * Controller for Admin side authentication of OneRaimol.
  * 
  * @category   Controller
- * @author     Gerona, John Michael D.
+ * @filesource classes/controller/auth.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Auth extends Controller_Template {
@@ -68,44 +70,51 @@
          * Checks the login information entered in the form to the DB.
          */
         public function action_login() {
+            // Find user in the DB
             $this->user = ORM::factory('staff')
                         ->where('username', '=', $_POST['username'])
                         ->and_where('password', '=', sha1($_POST['password']))
                         ->find();
             
             if($this->user->loaded()) {
-                // Set user to session
-                $this->session->set('userid', $this->user->staff_id);
-                $this->session->set('username', $this->user->username);
-                
-                $this->accesslevel = ORM::factory('staffrole')
-                                            ->where('staff_id', '=', $this->user->staff_id)
-                                            ->find_all();
-                
-                // If staff has multiple roles, get all the roles and
-                // put it in an array then set it to session. Else,
-                // set the single role to session.
-                if($this->accesslevel->count() > 0) {
-                    $array = array();
-                    
-                    foreach($this->accesslevel as $roles) {
-                        array_push($array, $roles->role_id);
+                if($this->user->status == 1) {
+                    // Set user to session
+                    $this->session->set('userid', $this->user->staff_id);
+                    $this->session->set('username', $this->user->username);
+
+                    $this->accesslevel = ORM::factory('staffrole')
+                                                ->where('staff_id', '=', $this->user->staff_id)
+                                                ->find_all();
+
+                    // If staff has multiple roles, get all the roles and
+                    // put it in an array then set it to session. Else,
+                    // set the single role to session.
+                    if($this->accesslevel->count() > 0) {
+                        $array = array();
+
+                        foreach($this->accesslevel as $roles) {
+                            array_push($array, $roles->role_id);
+                        }
+
+                        // Set role to session
+                        $this->session->set('roles', $array);
                     }
-                    
-                    // Set role to session
-                    $this->session->set('roles', $array);
+                    else {
+                        $this->session->set('roles', '');
+                    }
+
+                    $this->json['success'] = true;
                 }
                 else {
-                    $this->session->set('roles', '');
+                    $this->json['success'] = FALSE;
+                    $this->json['failmessage'] = $this->config['err']['login']['inactive'];
                 }
-                
-                $this->json['success'] = true;
             }
             else {
                 $this->json['success'] = false;
                 $this->json['failmessage'] = $this->config['err']['login']['fail'];
             }
-            
+            // Encode array to JSON
             $this->_json_encode();
         }
-    }
+    } // End Controller_Auth

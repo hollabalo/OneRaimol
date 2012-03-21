@@ -5,7 +5,9 @@
  * All controllers for profile module extend this controller.
  * 
  * @category   Controller
- * @author     Dizon, Theodore Earl G.
+ * @filesource classes/controller/cms/profile.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Cms_Profile extends Controller_Cms {

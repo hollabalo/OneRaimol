@@ -4,7 +4,10 @@
  * Index controller for Inventory module.
  * 
  * @category   Controller
- * @author     Gerona, John Michael D.
+ * @filesource classes/controller/cms/inventory/index.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
+ * @author     Dizon, Theodore Earl G.
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Cms_Inventory_Index extends Controller_Cms_Inventory {

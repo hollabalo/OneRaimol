@@ -5,7 +5,9 @@
  * Production module.
  * 
  * @category   Controller
- * @author     Dizon, Theodore Earl G.
+ * @filesource classes/controller/cms/production/pbt.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Cms_Production_Pbt extends Controller_Cms_Production {
@@ -59,9 +61,7 @@
             // Display the searchbox on the top bar
 //            $this->template->header->searchbox = $this->_get_current_url('search');
                       
-            // kailangang may notification sa grid index kung successful ba yung operation
-            // ng add, edit, o delete
-            // lalabas yung confirmation box dun sa successful action ng user
+            // Page action messages
             if(Helper_Helper::decrypt($status) == Constants_FormAction::ADD) {
                 $this->template->body->bodyContents->success = 'created';
             }
@@ -320,6 +320,10 @@
                                                      ->set('formStatus', $this->formstatus);
         }
         
+        /**
+         * Generates PDF
+         * @param string $record The record to be generated
+         */
         public function action_generatepdf($record = '') {
             require Kohana::find_file('vendor/dompdf', 'dompdf/dompdf_config.inc');
             

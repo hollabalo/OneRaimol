@@ -4,7 +4,9 @@
  * Index controller for Production module.
  * 
  * @category   Controller
- * @author     Gerona, John Michael D.
+ * @filesource classes/controller/cms/production/index.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Cms_Production_Index extends Controller_Cms_Production {
@@ -24,6 +26,7 @@
          * on the URI.
          */
         public function action_index() {
+            // Set HTML
             $this->template->body->bodyContents = View::factory('common/image')
                                                         ->set('imgpath', $this->config['images'])
                                                        ->set('image', $this->config['msg']['intro']['production']);

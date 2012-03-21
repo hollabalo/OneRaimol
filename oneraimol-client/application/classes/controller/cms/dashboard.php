@@ -4,7 +4,9 @@
  * Parent controller for Dashboard.
  * 
  * @category   Controller
- * @author     Gerona, John Michael D.
+ * @filesource classes/controller/cms/dashboard.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Cms_Dashboard extends Controller_Cms {
@@ -30,15 +32,15 @@
                                     ->bind('staff', $staff)
                                     ->bind('role', $role);
             
-            $staff = ORM::factory('staff')
-                    ->where('staff_id', '=', $this->session->get('userid'))
-                    ->find();
-            
-           
-            
-            $role = ORM::factory('staffrole')
-                            ->where('staff_id', '=', $staff->pk())
-                            ->find_all();
+         // Find staff
+         $staff = ORM::factory('staff')
+                ->where('staff_id', '=', $this->session->get('userid'))
+                ->find();
+
+         // Find roles
+         $role = ORM::factory('staffrole')
+                        ->where('staff_id', '=', $staff->pk())
+                        ->find_all();
        
         }
        

@@ -5,7 +5,9 @@
  * Inventory module.
  * 
  * @category   Controller
- * @author     Dizon, Theodore Earl G.
+ * @filesource classes/controller/cms/inventory/supplies.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Cms_Inventory_Supplies extends Controller_Cms_Inventory {
@@ -55,9 +57,7 @@
             // Display the searchbox on the top bar
 //            $this->template->header->searchbox = $this->_get_current_url('search');
                       
-            // kailangang may notification sa grid index kung successful ba yung operation
-            // ng add, edit, o delete
-            // lalabas yung confirmation box dun sa successful action ng user
+            // Action messages on grid
             if(Helper_Helper::decrypt($status) == Constants_FormAction::ADD) {
                 $this->template->body->bodyContents->success = 'created';
             }
@@ -268,7 +268,10 @@
                                                      ->set('formStatus', $this->formstatus);
         }
         
-         public function action_generatepdf() {
+        /**
+         * Generates PDF
+         */
+        public function action_generatepdf() {
             require Kohana::find_file('vendor/dompdf', 'dompdf/dompdf_config.inc');
             
             $this->materialsupply = ORM::factory('materialsupply')

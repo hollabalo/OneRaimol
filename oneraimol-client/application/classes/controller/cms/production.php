@@ -5,7 +5,9 @@
  * All controllers for production module extend this controller.
  * 
  * @category   Controller
- * @author     Gerona, John Michael D.
+ * @filesource classes/controller/cms/production.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Cms_Production extends Controller_Cms {
@@ -66,7 +68,7 @@
                 $accessflag = Helper_Helper::check_access_right($this->session->get('roles'), $position);
                 if($accessflag == TRUE) break;
             }
-            
+            // Prevent access if role is not listed
             if(!$accessflag) {
                 Request::current()->redirect(
                     URL::site( 'cms' , $this->_protocol )

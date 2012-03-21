@@ -5,7 +5,9 @@
  * All admin side controllers extend from this controller.
  * 
  * @category   Controller
- * @author     Gerona, John Michael D.
+ * @filesource classes/controller/cms.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Cms extends Controller_Template {
@@ -22,7 +24,7 @@
         protected $pageselector;
         
         /**
-         * @var 
+         * @var The search
          */
         protected $search;
         
@@ -129,12 +131,11 @@
          * to the login page.
          */
         public function action_logout() {
-            $this->session->delete('userid');
+            $this->session->destroy();
             
             Request::current()->redirect(
                 URL::site( 'auth' , $this->_protocol )
             );
         }
-        
 
-    }
+    } // End Controller_Cms

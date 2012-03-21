@@ -290,6 +290,10 @@
                 $this->_json_encode();
         } 
         
+        /**
+         * Generates PDF
+         * @param string $record The record to be generated
+         */
         public function action_generatepdf($record = '') {
             require Kohana::find_file('vendor/dompdf', 'dompdf/dompdf_config.inc');
             

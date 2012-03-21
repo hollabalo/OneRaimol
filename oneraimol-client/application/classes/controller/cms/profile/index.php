@@ -4,7 +4,9 @@
  * Index controller for Profile module.
  * 
  * @category   Controller
- * @author     Dizon, Theodore Earl G.
+ * @filesource classes/controller/cms/profile/index.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Cms_Profile_Index extends Controller_Cms_Profile {
@@ -48,11 +50,6 @@
             
             // Pagination limit
             $this->initialpagelimit = ORM::factory('systemsetting')->find();
-            
-            //$this->action_limit(Helper_Helper::encrypt($this->initialpagelimit->records_per_page));
-            
-            // Display the searchbox on the top bar
-//            $this->template->header->searchbox = $this->_get_current_url('search');
             
             $this->template->body->bodyContents = View::factory('cms/profile/form')   //set yung html page
                                                           ->bind('staff', $this->staff);   // var to iterate yung customer records  

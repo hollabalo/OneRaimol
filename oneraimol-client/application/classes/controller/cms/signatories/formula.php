@@ -4,7 +4,9 @@
  * Controller for Formula approvals of Signatories module.
  * 
  * @category   Controller
- * @author     Dizon, Theodore Earl G.
+ * @filesource classes/controller/cms/signatories/formula.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Cms_Signatories_Formula extends Controller_Cms_Signatories {
@@ -220,56 +222,6 @@
             }
             
             $this->_json_encode();
-        }
-        
-        /**
-         * Makes a search then populates the result
-         * into the data grid.
-         * @param string $record The search keyword
-         * @param string $limit Number of search result records per page
-         */
-        public function action_search($record, $limit = NULL) {
-            $this->pageSelectionDesc = $this->config['msg']['actions']['search'] . $this->config['msg']['page']['signatories']['formulas'];
-            
-            $this->template->body->bodyContents = View::factory('cms/signatories/formula/grid');
-            
-            // Gotta be immune from SQL injection attacks. :)
-            $this->formula = ORM::factory('formula');
-            
-            // Build the search conditions based on the selected criteria from the form
-            if(0 == Constants_FormAction::COMPANY) {
-                $this->formula->where('formula_id', 'LIKE', $record . '%');
-            }
-//            else if($_POST['searchtype'] == Constants_FormAction::ORDER_DATE) {
-//                $this->salesorder->where('purchase_order_tb.order_date', 'LIKE', $record);
-//            }
-//            else if($_POST['searchtype'] == Constants_FormAction::DELIVERY_DATE) {
-//                $this->salesorder->where('purchase_order_tb.delivery_date', 'LIKE', $record);
-//            }
-//            
-//            
-//            if($_POST['approvefilter'] == Constants_FormAction::APPROVE) {
-//                if(is_array($this->session->get('roles'))) {
-//                    
-//                }
-//                else {
-//                    
-//                }
-//            }
-//            else if($_POST['approvefilter'] == Constants_FormAction::DISAPPROVE) {
-//                $this->salesorder->and_where('', '=', '');
-//            }
-            
-            // Paginate the result set
-            $this->action_limit($limit, $this->formula);
-            
-            // Set offset and item per page from the pagination object
-            $this->formula->order_by( 'formula_id', 'DESC' )
-                             ->limit( $this->pagination->items_per_page )
-                             ->offset( $this->pagination->offset );
-            
-            $this->template->body->bodyContents->set('formula', $this->formula->find_all());
-             
         }
         
     }

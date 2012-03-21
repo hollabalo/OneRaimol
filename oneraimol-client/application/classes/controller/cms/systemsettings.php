@@ -5,8 +5,10 @@
  * All controllers for system settings module extend this controller.
  * 
  * @category   Controller
- * @author     Dizon, Theodore Earl G.
- * @copyright  (c) 2011 DCDGLP
+ * @filesource classes/controller/cms/systemsettings.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
+ * @copyright  (c) 2012 DCDGLP
  */
     class Controller_Cms_Systemsettings extends Controller_Cms {
         

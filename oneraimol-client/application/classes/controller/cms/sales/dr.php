@@ -5,7 +5,9 @@
  * Sales module.
  * 
  * @category   Controller
- * @author     Dizon, Theodore Earl G.
+ * @filesource classes/controller/cms/sales/dr.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Cms_Sales_Dr extends Controller_Cms_Sales {
@@ -59,8 +61,11 @@
             if(Helper_Helper::decrypt($status) == Constants_FormAction::ADD) {
                 $this->template->body->bodyContents->success = 'created';
             }
+            else if (Helper_Helper::decrypt($status) == Constants_FormAction::EDIT) {
+                $this->template->body->bodyContents->success = 'updated';
+            }
         }
-        
+         
         /**
          * Shows the paginated grid view
          * @param string $limit The limit to be set to the paginator
@@ -109,48 +114,13 @@
          * Shows the add grid, lists of sales order.
          */
         public function action_add() {
-//            // Display the searchbox on the top bar
-//            $this->template->header->searchbox = $this->_get_current_url('search');
-//            
-//            // Paginating a result set with WHERE clause?
-//            if(!is_null($searchquery)) {
-//                // Important! Else, incorrect result will display. Or the query won't work.
-//                $queryclone = clone $searchquery;
-//                
-//                // Check if limit is supplied on the URI, else, don't paginate
-//                if(is_null($limit)) {
-//                    $this->_pagination($queryclone, 'limit', NULL, TRUE);
-//                }
-//                else {
-//                    $this->_pagination($queryclone, 'limit', $limit, TRUE);
-//                }
-//            }
-//            else {
-//               // $this->pageSelectionDesc = $this->config['msg']['page']['sales']['dr'];
-//                
-//                // Display all records
-//                if($limit == Constants_FormAction::ALL) {
-//                    $this->_pagination(ORM::factory('so'), 'limit');
-//                }
-//                // Display paginated limits
-//                else {
-//                    $this->_pagination(ORM::factory('so'), 'limit', $limit);
-//                }
-//            }
             $this->pageSelectionDesc = $this->config['msg']['actions']['newdr'];
             $this->formstatus = Constants_FormAction::ADD;
-            //since iisang form lang ang ginagamit sa add at edit, kelangan lang
-            //bigyan ng state yung form kung add o edit ba sya,
-            //kaya yun ang trabaho ng formStatus
+
             $this->template->body->bodyContents = View::factory('cms/sales/dr/grid')
                                                         ->set('formStatus', $this->formstatus)
                                                         ->bind('purchaseorder', $this->purchaseorder);
-//            $this->purchaseorder = ORM::factory('po')
-//                                    ->where('dr_id', '=', NULL)
-//                                    ->order_by( 'po_id', 'DESC' )
-////                                    ->limit( $this->pagination->items_per_page )
-////                                    ->offset( $this->pagination->offset )
-//                                    ->find_all();
+
             $this->purchaseorder = DB::select('purchase_order_tb.*', 'purchase_order_item_tb.*', 'sales_order_tb.*', array(DB::expr('COUNT(purchase_order_item_tb.po_id)'), 'total_items'))
                                     ->from('purchase_order_tb')
                                     ->join('purchase_order_item_tb')
@@ -167,8 +137,6 @@
                                     ->and_where_close()
                                     ->as_object()
                                     ->execute();
-
-            
         }
         
         /**
@@ -204,7 +172,7 @@
             if($this->deliveryreceipt->loaded()) {
                 $this->pageSelectionDesc = $this->config['msg']['page']['signatories']['drdetail'] . $this->deliveryreceipt->dr_id_string;
                 
-                
+                // Set HTML
                 $this->template->body->bodyContents = View::factory('cms/sales/dr/form')
                                                              ->set('deliveryreceipt', $this->deliveryreceipt)
                                                              ->set('purchaseorder', $this->purchaseorder);
@@ -212,6 +180,7 @@
                 
             }
         }
+        
         /**
          * Creates a Delivery Receipt
          * @param string $record the record to be a delivery receipt
@@ -225,12 +194,6 @@
                 $this->purchaseorder = ORM::factory('po')
                             ->where('so_id', '=', $this->salesorder->so_id)
                             ->find();
-//                $this->salesorderitem = ORM::factory('soitem')
-//                            ->where('so_id', '=', Helper_Helper::decrypt($id))
-//                            ->find_all();
-//                $this->productionworkorderitem = ORM::factory('pwoitem')
-//                                ->where('so_item_id', '=', $this->salesorderitem->so_item_id)
-//                                ->find_all();
 
                 if( $this->salesorder->loaded() && $this->purchaseorder->loaded()) {
                     $dr = array (
@@ -254,22 +217,6 @@
                             ->set($po)
                             ->where('so_id', '=', $this->salesorder->so_id)
                             ->execute();
-//                    $this->purchaseorder = ORM::factory('po')
-//                                    ->where('so_id', '=', $this->salesorder->so_id)
-//                                    ->values($po)->update()
-//                                    ->save();
-                    
-//                    $pwoitems = array (
-//                        'dr_flag' => 1
-//                    );
-//                    DB::update('production_work_order_item_tb')
-//                            ->set($pwoitems)
-//                            ->where('so_item_id', '=', $this->salesorderitem->so_item_id)
-//                            ->execute();
-//                    $this->productionworkorderitem = ORM::factory('pwoitem')
-//                                    ->where('so_id', '=', $this->salesorder->so_id)
-//                                    ->values($pwoitems)->update()
-//                                    ->save();
                 }
             }
 
@@ -342,6 +289,10 @@
                                                      ->set('formStatus', $this->formstatus);
         }
         
+        /**
+         * Generates PDF export
+         * @param string $record The record to be exported
+         */
         public function action_generatepdf($record = '') {
             require Kohana::find_file('vendor/dompdf', 'dompdf/dompdf_config.inc');
             
@@ -363,4 +314,41 @@
             $dompdf->render();
             $dompdf->stream($filename . ".pdf", array('Attachment' => 1));
         }
+        
+        /**
+         * Confirms DR
+         * @param string $record The record to be confirmed
+         */
+        public function action_confirm($record) {
+                $this->deliveryreceipt = ORM::factory('deliveryreceipt')
+                                ->where('dr_id', '=', Helper_Helper::decrypt($record))
+                                ->find();
+
+                $this->pageSelectionDesc = $this->config['msg']['actions']['viewdr'] . $this->deliveryreceipt->dr_id_string;
+                $this->formstatus = Constants_FormAction::EDIT;
+
+                $this->template->body->bodyContents = View::factory('cms/sales/dr/confirmorder')
+                                                        ->set('deliveryreceipt', $this->deliveryreceipt)
+                                                        ->set('formStatus', $this->formstatus);
+        }
+        
+        /**
+         * Processes the confirm
+         * @param string $record Processes the confirm
+         */    
+        public function action_process_confirmorder($record = '') {
+                $this->deliveryreceipt = ORM::factory('deliveryreceipt')
+                                ->where('dr_id', '=', Helper_Helper::decrypt($record))
+                                ->where('confirmation_code', '=', $_POST['confirmation_code'])
+                                ->find();
+
+                if($this->deliveryreceipt->loaded()) {
+                        $array = array (
+                            'confirmation_code' => NULL,
+                            'order_receive_status' => 2
+                    );
+                        $this->deliveryreceipt->values($array);
+                        $this->deliveryreceipt->save();
+                }
+            }
     }

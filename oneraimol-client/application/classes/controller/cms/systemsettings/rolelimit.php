@@ -5,7 +5,9 @@
  * System Settings module.
  * 
  * @category   Controller
- * @author     Dizon, Theodore Earl G.
+ * @filesource classes/controller/cms/systemsettings/rolelimit.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Cms_Systemsettings_Rolelimit extends Controller_Cms_Systemsettings {
@@ -143,15 +145,8 @@
             
             $this->rolelimit = ORM::factory('rolelimit');
             
-            //security na rin kaya specified yung condition since
-            //kung may kumag na user na maalam sa mga ganto, pwede nyang palitan ang value
-            //ng formstatus na hidden field dun sa form
+   
             if($_POST['formstatus'] == Constants_FormAction::ADD) {
-                //kelangang itest kung used na yung username
-                //kasi diba hindi pwedeng magpareho ang username
-//                $this->product->where('name', '=', $_POST['name'])
-//                         ->find();
-                
                $flag = true;
                $this->json['action']=Constants_FormAction::ADD;
               
@@ -194,9 +189,7 @@
             else {
                 $this->json['success'] = false;
             }          
-            //since ajax ang method ng pagssubmit ng form, kelangang pasahan ng
-            //json encoded message yung page para mamanipulate thru javascript yung
-            //gagawin ng form kapag nasubmit na yung form
+            // JSON to AJAX
             $this->_json_encode();
         }
         

@@ -5,7 +5,9 @@
  * Accounts module.
  * 
  * @category   Controller
- * @author     Dizon, Theodore Earl G.
+ * @filesource classes/controller/cms/accounts/staff.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Cms_Accounts_Staff extends Controller_Cms_Accounts {
@@ -194,13 +196,26 @@
                          ->find();
                                             
                 if(! $this->staff->loaded()) {
-
-                    $this->email = ORM::factory('staff')
-                               ->where('primary_email', '=', $_POST['primary_email'])
-                               ->or_where('secondary_email', '=', $_POST['primary_email'])
-                               ->or_where('primary_email', '=', $_POST['secondary_email'])
-                               ->or_where('secondary_email', '=', $_POST['secondary_email'])
-                               ->find();
+                    // Check for duplicate emails
+                    $email = '';
+                    if(trim($_POST['secondary_email']) != '') {
+                        $email = ORM::factory('staff')
+                                   ->where('username', 'is not', null)
+                                   ->and_where('primary_email', '=', $_POST['primary_email'])
+                                   ->or_where('secondary_email', '=', $_POST['primary_email']);
+                    }
+                    else {
+                        $email = ORM::factory('staff')
+                                   ->where('username', 'is not', null)
+                                   ->and_where('primary_email', '=', $_POST['primary_email'])
+                                   ->or_where('secondary_email', '=', $_POST['primary_email'])
+                                   ->or_where('primary_email', '=', $_POST['secondary_email'])
+                                   ->or_where('secondary_email', '=', $_POST['secondary_email']);
+                    }
+                    
+                    $this->email = $email;
+                    
+                    $this->email->find();                    
 
                     if($this->email->loaded()) {
                         $this->json['failmessage'] = $this->config['err']['account']['email'];
@@ -348,12 +363,12 @@
                             }
 
                 }
-                //may mga error na nadetect
+                // Error detected
                 else {
                     $this->json['success'] = false;
                 }
             
-
+            // Encode to JSON for AJAX
             $this->_json_encode();
         }
         
@@ -409,16 +424,16 @@
                                     ->find();
                 
                                         
-                    if($this->rolecount->get('role_count') < $seed->limit) {
-                        //Log activity
-                        $this->_save_activity_stafflog( 'enablestaff', $this->staff->username);
-                        $this->staff->status = 1;
-                        $this->staff->save();
-                        $role_flag = TRUE;
-                    }
-                    else{
-                        $this->json['failmessage'] = $this->config['err']['account']['roleactivatefail'];
-                    }
+                if($this->rolecount->get('role_count') < $seed->limit) {
+                    //Log activity
+                    $this->_save_activity_stafflog( 'enablestaff', $this->staff->username);
+                    $this->staff->status = 1;
+                    $this->staff->save();
+                    $role_flag = TRUE;
+                }
+                else{
+                    $this->json['failmessage'] = $this->config['err']['account']['roleactivatefail'];
+                }
  
 
             }
@@ -488,15 +503,13 @@
          * @param string $record The record to be edited
          */
         public function action_changepassword($record = '') {
-            
-            //iisang view ang gagamitin ng mga change passwords
-            //di ko tiningnann ang view, pero iredo mo yung mga vars sa view para 'record' lang ang tingnan nung viwe
+            // Set HTML page defaults
             $this->pageSelectionDesc = $this->config['msg']['actions']['changepw'];
             $this->template->body->bodyContents = View::factory('cms/accounts/changepassword/staff-form')
                                                          ->bind('staff', $this->staff)
                                                          ->set('staff_id', $record);
             
-            //alamin kung anong record ang icchange password
+            // Record to be changed
             $this->staff = ORM::factory('staff')
                                      ->where('staff_id', '=', Helper_Helper::decrypt($record))
                                      ->find();
@@ -549,13 +562,16 @@
             $this->pageSelectionDesc = $this->config['msg']['actions']['viewstaff'] . $this->staff->full_name();
             $this->formstatus = Constants_FormAction::VIEW;
             
-            //..tapos iloload sa variable na visible sa view, $customer
-            //may formStatus rin
+            // Set page defaults
             $this->template->body->bodyContents = View::factory('cms/reports/accounts/staff/viewreport')
                                                      ->set('staff', $this->staff)
                                                      ->set('formStatus', $this->formstatus);
         }
         
+        /**
+         * Generates a PDF copy of staff record
+         * @param string $record The record to be generated
+         */
         public function action_generatepdf($record = '') {
             require Kohana::find_file('vendor/dompdf', 'dompdf/dompdf_config.inc');
             
@@ -575,6 +591,9 @@
             $dompdf->stream($filename .".pdf", array('Attachment' => 1));
         }
         
+        /**
+         * Generates all staff list to PDF file
+         */
         public function action_generatepdflist() {
             require Kohana::find_file('vendor/dompdf', 'dompdf/dompdf_config.inc');
             

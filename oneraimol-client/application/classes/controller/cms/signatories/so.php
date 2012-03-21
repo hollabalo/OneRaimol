@@ -4,7 +4,9 @@
  * Controller for Sales Order approvals of Signatories module.
  * 
  * @category   Controller
- * @author     Gerona, John Michael D.
+ * @filesource classes/controller/cms/signatories/so.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Cms_Signatories_So extends Controller_Cms_Signatories {
@@ -311,71 +313,5 @@
                 }
                 
             }
-        }
-        
-        /**
-         * Makes a search then populates the result
-         * into the data grid.
-         * @param string $record The search keyword
-         * @param string $limit Number of search result records per page
-         */
-        public function action_search($record, $limit = NULL) {
-            $this->pageSelectionDesc = $this->config['msg']['actions']['search'] . $this->config['msg']['page']['signatories']['so'];
-            
-            $this->template->body->bodyContents = View::factory('cms/signatories/so/grid');
-            
-            // The query is exact or not. Mimics the double quote searches in Google
-//            if($_POST['stringmatch'] == TRUE) {
-//                $record = Helper_Helper::decrypt($record);
-//            }
-//            else {
-//                $record = Helper_Helper::decrypt($record) . '%';
-//            }
-            
-            // Gotta be immune from SQL injection attacks. :)
-            $this->salesorder = ORM::factory('so')
-                                     ->join('purchase_order_tb')
-                                     ->on('sales_order_tb.so_id', '=', 'purchase_order_tb.so_id')
-                                     ->join('customer_tb')
-                                     ->on('purchase_order_tb.customer_id', '=', 'customer_tb.customer_id');
-            
-            // Build the search conditions based on the selected criteria from the form
-            if(0 == Constants_FormAction::COMPANY) {
-                $this->salesorder->where('customer_tb.company', 'LIKE', $record . '%');
-            }
-//            else if($_POST['searchtype'] == Constants_FormAction::ORDER_DATE) {
-//                $this->salesorder->where('purchase_order_tb.order_date', 'LIKE', $record);
-//            }
-//            else if($_POST['searchtype'] == Constants_FormAction::DELIVERY_DATE) {
-//                $this->salesorder->where('purchase_order_tb.delivery_date', 'LIKE', $record);
-//            }
-//            
-//            
-//            if($_POST['approvefilter'] == Constants_FormAction::APPROVE) {
-//                if(is_array($this->session->get('roles'))) {
-//                    
-//                }
-//                else {
-//                    
-//                }
-//            }
-//            else if($_POST['approvefilter'] == Constants_FormAction::DISAPPROVE) {
-//                $this->salesorder->and_where('', '=', '');
-//            }
-            
-            
-            // Ensure to select only the unapproved documents by proper signatories
-            $this->salesorder = $this->_where_roles($this->salesorder);
-            
-            // Paginate the result set
-            $this->action_limit($limit, $this->salesorder);
-            
-            // Set offset and item per page from the pagination object
-            $this->salesorder->order_by( 'so_id', 'ASC' )
-                             ->limit( $this->pagination->items_per_page )
-                             ->offset( $this->pagination->offset );
-            
-            $this->template->body->bodyContents->set('salesorder', $this->salesorder->find_all());
-             
         }
     }

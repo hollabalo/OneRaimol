@@ -5,7 +5,9 @@
  * Inventory module.
  * 
  * @category   Controller
- * @author     Dizon, Theodore Earl G.
+ * @filesource classes/controller/cms/inventory/unit.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Cms_Inventory_Unit extends Controller_Cms_Inventory {
@@ -59,9 +61,7 @@
             // Display the searchbox on the top bar
             $this->template->header->searchbox = $this->_get_current_url('search');
                       
-            // kailangang may notification sa grid index kung successful ba yung operation
-            // ng add, edit, o delete
-            // lalabas yung confirmation box dun sa successful action ng user
+            // DIsplay appropriate messages to HTML
             if(Helper_Helper::decrypt($status) == Constants_FormAction::ADD) {
                 $this->template->body->bodyContents->success = 'created';
             }
@@ -125,9 +125,7 @@
             //san ba uli ung msg?..
             $this->pageSelectionDesc = $this->config['msg']['actions']['newunit'];
             $this->formstatus = Constants_FormAction::ADD;
-            //since iisang form lang ang ginagamit sa add at edit, kelangan lang
-            //bigyan ng state yung form kung add o edit ba sya,
-            //kaya yun ang trabaho ng formStatus
+            // Set HTML
             $this->template->body->bodyContents = View::factory('cms/inventory/unit/form')
                                                         ->set('formStatus', $this->formstatus);
         }
@@ -146,8 +144,7 @@
             $this->pageSelectionDesc = $this->config['msg']['actions']['editunit'];
             $this->formstatus = Constants_FormAction::EDIT;
             
-            //..tapos iloload sa variable na visible sa view, $supplier
-            //may formStatus rin
+            // Set HTML
             $this->template->body->bodyContents = View::factory('cms/inventory/unit/form')
                                                      ->set('unit', $this->unit)
                                                      ->set('formStatus', $this->formstatus);
@@ -163,9 +160,7 @@
             
             $this->unit = ORM::factory('unitmaterialtype');
             
-            //security na rin kaya specified yung condition since
-            //kung may kumag na user na maalam sa mga ganto, pwede nyang palitan ang value
-            //ng formstatus na hidden field dun sa form
+            // If form submit is from ADD form
             if($_POST['formstatus'] == Constants_FormAction::ADD) {
    
                 $this->unit->where('description', '=', $_POST['description'])
@@ -182,10 +177,6 @@
                     }
                     else {
                         $flag = true;
-                        //kelangang sabihin kung ano bang action ang ginagawa ng
-                        //current form submission since iisang method lang rin
-                        //ang ginagamit sa form submission, so kelangan nito para
-                        //malaman ang current form action
                         $this->json['action'] = Constants_FormAction::ADD;
                     }
                     
@@ -194,6 +185,7 @@
                     $this->json['failmessage'] = $this->config['err']['inventory']['unit']['desc'];
                 }
             }
+            // If form submit is from EDIT form
             else if($_POST['formstatus'] == Constants_FormAction::EDIT) {
                 $this->unit->where('um_id', '=', Helper_Helper::decrypt($record))
                          ->find();
@@ -204,6 +196,7 @@
                $this->_save_activity_stafflog( 'editunit', $this->unit->um_id);  
             } 
             
+            // No errors detected
             if($flag) {
                 $this->unit->values($_POST);
                 $this->unit->save();
@@ -217,9 +210,7 @@
             else {
                 $this->json['success'] = false;
             }
-            //since ajax ang method ng pagssubmit ng form, kelangang pasahan ng
-            //json encoded message yung page para mamanipulate thru javascript yung
-            //gagawin ng form kapag nasubmit na yung form
+            // Process JSON for AJAX
             $this->_json_encode();
         }
         
@@ -274,21 +265,22 @@
          * @param string $record The record to be edited.
          */
         public function action_viewreport() {
-            
-            //hahanapin yung record tapos...
+            // Find record
             $this->unit = ORM::factory('unitmaterialtype')
                              ->find_all();
             
             $this->pageSelectionDesc = $this->config['msg']['actions']['viewunit'];
             $this->formstatus = Constants_FormAction::VIEW;
             
-            //..tapos iloload sa variable na visible sa view, $customer
-            //may formStatus rin
+            // Set HTML
             $this->template->body->bodyContents = View::factory('cms/reports/inventory/unit/viewreport')
                                                      ->set('unit', $this->unit)
                                                      ->set('formStatus', $this->formstatus);
         }
         
+        /**
+         * Generates PDF
+         */
         public function action_generatepdf() {
             require Kohana::find_file('vendor/dompdf', 'dompdf/dompdf_config.inc');
             

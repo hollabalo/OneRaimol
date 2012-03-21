@@ -5,7 +5,9 @@
  * Accounts module.
  * 
  * @category   Controller
- * @author     Gerona, John Michael D.
+ * @filesource classes/controller/cms/accounts/customer.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Cms_Accounts_Customer extends Controller_Cms_Accounts {
@@ -66,10 +68,7 @@
             // Display the searchbox on the top bar
             $this->template->header->searchbox = $this->_get_current_url('search');
                       
-            // kailangang may notification sa grid index kung successful ba yung operation
-            // ng add, edit, o delete
-            // lalabas yung confirmation box dun sa successful action ng user
-            // try mong magadd, edit, yung delete wala pa
+            // Display appropriate action messages to grid page
             if(Helper_Helper::decrypt($status) == Constants_FormAction::ADD) {
                 $this->template->body->bodyContents->success = 'created';
             }
@@ -139,9 +138,8 @@
         public function action_add() {
             $this->pageSelectionDesc = $this->config['msg']['actions']['newcustomer'];
             $this->formstatus = Constants_FormAction::ADD;
-            //since iisang form lang ang ginagamit sa add at edit, kelangan lang
-            //bigyan ng state yung form kung add o edit ba sya,
-            //kaya yun ang trabaho ng formStatus
+            
+            // Set HTML for page viewing
             $this->template->body->bodyContents = View::factory('cms/accounts/customer/form')
                                                         ->set('formStatus', $this->formstatus);
         }
@@ -152,17 +150,14 @@
          */
         public function action_edit($record = '') {
             
-            //hahanapin yung record tapos...
             $this->customer = ORM::factory('customer')
                             ->where('customer_id' ,'=', Helper_Helper::decrypt($record))
                             ->find();
             
-           
             $this->pageSelectionDesc = $this->config['msg']['actions']['editcustomer'];
             $this->formstatus = Constants_FormAction::EDIT;
             
-            //..tapos iloload sa variable na visible sa view, $customer
-            //may formStatus rin
+            // Set HTML for page viewing
             $this->template->body->bodyContents = View::factory('cms/accounts/customer/editform')
                                                      ->set('customer', $this->customer)
                                                      ->set('formStatus', $this->formstatus);
@@ -173,42 +168,50 @@
          * @param string $record The record to be processed.
          */
         public function action_process_form($record = '') {
-            
-            $flag = false; //gagamitan ng flag para hindi magulo
+            // Flag for form processing
+            $flag = false;
             
             $this->customer = ORM::factory('customer');
             
-            //security na rin kaya specified yung condition since
-            //kung may kumag na user na maalam sa mga ganto, pwede nyang palitan ang value
-            //ng formstatus na hidden field dun sa form
+            // Process if form action is ADD
             if($_POST['formstatus'] == Constants_FormAction::ADD) {
-                //kelangang itest kung used na yung username
-                //kasi diba hindi pwedeng magpareho ang username
+                // Check if username is already userd
                 $this->customer->where('username', '=', $_POST['username'])
                          ->find();
                 if(! $this->customer->loaded()) {
-                    //check rin for duplicate emails
-                    $this->email = ORM::factory('customer')
-                               ->where('username', 'is not', null)
-                               ->and_where('primary_email', '=', $_POST['primary_email'])
-                               ->or_where('secondary_email', '=', $_POST['primary_email'])
-                               ->or_where('primary_email', '=', $_POST['secondary_email'])
-                               ->or_where('secondary_email', '=', $_POST['secondary_email'])
-                               ->find();
-                    //kung may nakitang record na me ganung email, fail
+                    // Check if email has been used
+                    $email = '';
+                    if(trim($_POST['secondary_email']) != '') {
+                        $email = ORM::factory('customer')
+                                   ->where('username', 'is not', null)
+                                   ->and_where('primary_email', '=', $_POST['primary_email'])
+                                   ->or_where('secondary_email', '=', $_POST['primary_email']);
+                    }
+                    else {
+                        $email = ORM::factory('customer')
+                                   ->where('username', 'is not', null)
+                                   ->and_where('primary_email', '=', $_POST['primary_email'])
+                                   ->or_where('secondary_email', '=', $_POST['primary_email'])
+                                   ->or_where('primary_email', '=', $_POST['secondary_email'])
+                                   ->or_where('secondary_email', '=', $_POST['secondary_email']);
+                    }
+                    
+                    $this->email = $email;
+                    
+                    $this->email->find();
+                    
+                    // Found existing email
                     if($this->email->loaded()) {
                         $this->json['failmessage'] = $this->config['err']['account']['email'];
                     }
                     else {
                         $flag = true;
-                        //kelangang sabihin kung ano bang action ang ginagawa ng
-                        //current form submission since iisang method lang rin
-                        //ang ginagamit sa form submission, so kelangan nito para
-                        //malaman ang current form action
+                        // Set action for appropriate jquery JSON response
                         $this->json['action'] = Constants_FormAction::ADD;
                     }
                     
                 }
+                // Errors detected, duplicate username
                 else {
                     $this->json['failmessage'] = $this->config['err']['account']['username'];
                 }
@@ -280,7 +283,7 @@
                 
             }
            
-            //kung walang error
+            // Process form submit if no errors are detected
             if($flag) {
 
                 if($_POST['formstatus'] == Constants_FormAction::EDIT) {
@@ -319,23 +322,16 @@
                         $this->deliveryaddress = ORM::factory('deliveryaddress')
                                            ->values($array)
                                            ->save();
-                                            // Log activity
-
-
-                    
-                    
                 }
                 
                 $this->json['success'] = true;
             }
-            //may mga error na nadetect
+            // Error detected
             else {
                 $this->json['success'] = false;
             }
 
-            //since ajax ang method ng pagssubmit ng form, kelangang pasahan ng
-            //json encoded message yung page para mamanipulate thru javascript yung
-            //gagawin ng form kapag nasubmit na yung form
+            // Encode array to JSON for AJAX processing
             $this->_json_encode();
         }
         
@@ -429,23 +425,29 @@
              
         }
         
-        //same rin to sa staff
+        /**
+         * Shows the change password form
+         * @param string $record The account password to be changed
+         */
         public function action_changepassword($record = '') {
             
-            //iisang view ang gagamitin ng mga change passwords
-            //di ko tiningnann ang view, pero iredo mo yung mga vars sa view para 'record' lang ang tingnan nung viwe
+            // Set HTML defaults
             $this->pageSelectionDesc = $this->config['msg']['actions']['changepw'];
             $this->template->body->bodyContents = View::factory('cms/accounts/changepassword/customer-form')
                                                          ->bind('customer', $this->customer)
                                                          ->set('customer_id', $record);
             
-            //alamin kung anong record ang icchange password
+            // Find record to be password changed
             $this->customer = ORM::factory('customer')
                                      ->where('customer_id', '=', Helper_Helper::decrypt($record))
                                      ->find();
             
         }
         
+        /**
+         * Processes the change password form
+         * @param string $record The record to be processed
+         */
         public function action_processchangepw($record = '') {
                 $this->json['action'] = Constants_FormAction::EDIT;
                 
@@ -471,7 +473,7 @@
                             $this->json['failmessage'] = $this->config['err']['account']['password'];
                         }
                 }
-                
+                // Encode to JSON for AJAX
                 $this->_json_encode();
         } 
         
@@ -493,7 +495,6 @@
          */
         public function action_viewreport($record = '') {
             
-            //hahanapin yung record tapos...
             $this->customer = ORM::factory('customer')
                             ->where('customer_id' ,'=', Helper_Helper::decrypt($record))
                             ->find();  
@@ -501,13 +502,16 @@
             $this->pageSelectionDesc = $this->config['msg']['actions']['viewcustomer'] . $this->customer->full_name();
             $this->formstatus = Constants_FormAction::VIEW;
             
-            //..tapos iloload sa variable na visible sa view, $customer
-            //may formStatus rin
+            // Set HTML page defaults
             $this->template->body->bodyContents = View::factory('cms/reports/accounts/customer/viewreport')
                                                      ->set('customer', $this->customer)
                                                      ->set('formStatus', $this->formstatus);
         }
         
+        /**
+         * Generates PDF from the DB
+         * @param string $record The record to be PDF generated
+         */
         public function action_generatepdf($record = '') {
             require Kohana::find_file('vendor/dompdf', 'dompdf/dompdf_config.inc');
             
@@ -529,6 +533,9 @@
             $dompdf->stream($filename . ".pdf", array('Attachment' => 1));
         }
         
+        /**
+         * Generates PDF of all accounts
+         */
         public function action_generatepdflist() {
             require Kohana::find_file('vendor/dompdf', 'dompdf/dompdf_config.inc');
             

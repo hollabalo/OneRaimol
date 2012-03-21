@@ -4,7 +4,9 @@
  * Index controller for System Settings module.
  * 
  * @category   Controller
- * @author     Dizon, Theodore Earl G.
+ * @filesource classes/controller/cms/systemsettings/index.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Cms_Systemsettings_Index extends Controller_Cms_Systemsettings {
@@ -25,7 +27,7 @@
          */
         public function action_index() {
 
-            
+            // Set HTML
             $this->template->body->bodyContents = View::factory('common/image')
                                                         ->set('imgpath', $this->config['images'])
                                                         ->set('image', $this->config['msg']['intro']['acctmgmt']);

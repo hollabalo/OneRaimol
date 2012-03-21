@@ -4,7 +4,9 @@
  * Index controller for Accounts module.
  * 
  * @category   Controller
- * @author     Gerona, John Michael D.
+ * @filesource classes/controller/cms/accounts/index.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Cms_Accounts_Index extends Controller_Cms_Accounts {
@@ -24,7 +26,7 @@
          * on the URI.
          */
         public function action_index() {
-
+            // Set page defaults
             $this->template->body->bodyContents = View::factory('common/image')
                                                         ->set('imgpath', $this->config['images'])
                                                        ->set('image', $this->config['msg']['intro']['acctmgmt']);

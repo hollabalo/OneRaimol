@@ -4,7 +4,9 @@
  * Controller for Production batch ticket approvals of Signatories module.
  * 
  * @category   Controller
- * @author     Gerona, John Michael D.
+ * @filesource classes/controller/cms/signatories/pbt.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Cms_Signatories_Pbt extends Controller_Cms_Signatories {
@@ -253,56 +255,6 @@
             }
             
             $this->_json_encode();
-        }
-        
-        /**
-         * Makes a search then populates the result
-         * into the data grid.
-         * @param string $record The search keyword
-         * @param string $limit Number of search result records per page
-         */
-        public function action_search($record, $limit = NULL) {
-            $this->pageSelectionDesc = $this->config['msg']['actions']['search'] . $this->config['msg']['page']['signatories']['pbt'];
-            
-            $this->template->body->bodyContents = View::factory('cms/signatories/pbt/grid');
-            
-            // Gotta be immune from SQL injection attacks. :)
-            $this->productionworkorder = ORM::factory('pbt');
-            
-            // Build the search conditions based on the selected criteria from the form
-            if(0 == Constants_FormAction::COMPANY) {
-                $this->productionworkorder->where('pwo_id', 'LIKE', $record . '%');
-            }
-//            else if($_POST['searchtype'] == Constants_FormAction::ORDER_DATE) {
-//                $this->salesorder->where('purchase_order_tb.order_date', 'LIKE', $record);
-//            }
-//            else if($_POST['searchtype'] == Constants_FormAction::DELIVERY_DATE) {
-//                $this->salesorder->where('purchase_order_tb.delivery_date', 'LIKE', $record);
-//            }
-//            
-//            
-//            if($_POST['approvefilter'] == Constants_FormAction::APPROVE) {
-//                if(is_array($this->session->get('roles'))) {
-//                    
-//                }
-//                else {
-//                    
-//                }
-//            }
-//            else if($_POST['approvefilter'] == Constants_FormAction::DISAPPROVE) {
-//                $this->salesorder->and_where('', '=', '');
-//            }
-            
-            // Paginate the result set
-            $this->action_limit($limit, $this->productionbatchticket);
-            
-            // Set offset and item per page from the pagination object
-            $this->productionbatchticket->order_by( 'pbt_id', 'ASC' )
-                             ->limit( $this->pagination->items_per_page )
-                             ->offset( $this->pagination->offset );
-            
-            $this->template->body->bodyContents->set('productionbatchticket', $this->productionbatchticket->find_all());
-             
         }
         
     }

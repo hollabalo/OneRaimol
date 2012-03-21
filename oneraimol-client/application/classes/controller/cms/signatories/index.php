@@ -4,7 +4,9 @@
  * Index controller for Signatories module.
  * 
  * @category   Controller
- * @author     Gerona, John Michael D.
+ * @filesource classes/controller/cms/signatories/index.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Cms_Signatories_Index extends Controller_Cms_Signatories {
@@ -24,6 +26,7 @@
          * on the URI.
          */
         public function action_index() {
+            // Set HTML defaults
             $this->template->body->bodyContents = View::factory('common/image')
                                                         ->set('imgpath', $this->config['images'])
                                                        ->set('image', $this->config['msg']['intro']['signatories']);

@@ -5,7 +5,9 @@
  * Inventory module.
  * 
  * @category   Controller
- * @author     Dizon, Theodore Earl G.
+ * @filesource classes/controller/cms/inventory/suppliesstock.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Cms_Inventory_SuppliesStock extends Controller_Cms_Inventory {
@@ -62,9 +64,7 @@
             $this->action_limit(Helper_Helper::encrypt($this->initialpagelimit->records_per_page));
             // Display the searchbox on the top bar
             $this->template->header->searchbox = $this->_get_current_url('search');
-            // kailangang may notification sa grid index kung successful ba yung operation
-            // ng add, edit, o delete
-            // lalabas yung confirmation box dun sa successful action ng user
+            // DIsplay appropriate action messages
             if(Helper_Helper::decrypt($status) == Constants_FormAction::ADD) {
                 $this->template->body->bodyContents->success = 'created';
             }
@@ -133,12 +133,12 @@
         public function action_add($record = '') {
             $this->pageSelectionDesc = $this->config['msg']['actions']['newstock'];
             $this->formstatus = Constants_FormAction::ADD;
-            //since iisang form lang ang ginagamit sa add at edit, kelangan lang
-            //bigyan ng state yung form kung add o edit ba sya,
-            //kaya yun ang trabaho ng formStatus
+            
             $this->materialsupply = ORM::factory('materialsupply')
                             ->where('material_supply_id' ,'=', Helper_Helper::decrypt($record))
                             ->find();
+            
+            // Set HTML
             $this->template->body->bodyContents = View::factory('cms/inventory/supplies/stock/form')
                                                         ->set('materialsupply', $this->materialsupply)
                                                         ->set('formStatus', $this->formstatus);
@@ -150,7 +150,6 @@
          */
         public function action_edit($record = '') {
             
-            //hahanapin yung record tapos...
             $this->materialstocklevel = ORM::factory('materialstocklevel')
                             ->where('stock_id' ,'=', Helper_Helper::decrypt($record))
                             ->find();
@@ -158,8 +157,7 @@
             $this->pageSelectionDesc = $this->config['msg']['actions']['editstock'];
             $this->formstatus = Constants_FormAction::EDIT;
             
-            //..tapos iloload sa variable na visible sa view, $supplier
-            //may formStatus rin
+            // Set HTMLs
             $this->template->body->bodyContents = View::factory('cms/inventory/supplies/stock/form')
                                                      ->set('materialstocklevel', $this->materialstocklevel)
                                                      ->set('materialsupply', TRUE)
@@ -172,7 +170,7 @@
          */
         public function action_process_form($record = '') {
             
-            $flag = false; //gagamitan ng flag para hindi magulo
+            $flag = false;
             
             if($_POST['formstatus'] == Constants_FormAction::ADD) {
                 $this->materialstocklevel = ORM::factory('materialstocklevel');

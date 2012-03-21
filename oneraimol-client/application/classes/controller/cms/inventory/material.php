@@ -5,7 +5,9 @@
  * Inventory module.
  * 
  * @category   Controller
- * @author     Dizon, Theodore Earl G.
+ * @filesource classes/controller/cms/inventory/material.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Cms_Inventory_Material extends Controller_Cms_Inventory {
@@ -427,6 +429,9 @@
                                                      ->set('formStatus', $this->formstatus);
         }
         
+        /**
+         * Generates PDF
+         */
         public function action_generatepdf() {
             require Kohana::find_file('vendor/dompdf', 'dompdf/dompdf_config.inc');
             

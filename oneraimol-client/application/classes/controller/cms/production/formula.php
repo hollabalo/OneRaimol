@@ -5,7 +5,9 @@
  * Production module.
  * 
  * @category   Controller
- * @author     Dizon, Theodore Earl G.
+ * @filesource classes/controller/cms/production/formula.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Cms_Production_Formula extends Controller_Cms_Production {
@@ -215,9 +217,7 @@
             $this->formula = ORM::factory('formula');
             $this->formuladetail = ORM::factory('formuladetail');
             
-            //security na rin kaya specified yung condition since
-            //kung may kumag na user na maalam sa mga ganto, pwede nyang palitan ang value
-            //ng formstatus na hidden field dun sa form
+            // If form submit is from ADD
             if($_POST['formstatus'] == Constants_FormAction::ADD) {
                 
                 $this->pwoitems = ORM::factory('pwoitem')
@@ -227,6 +227,7 @@
                 $flag = TRUE;
                 $this->json['action'] = Constants_FormAction::ADD;
             }
+            // Form submit from EDIT
             else if($_POST['formstatus'] == Constants_FormAction::EDIT) {
                 $this->formula->where('formula_id', '=', Helper_Helper::decrypt($record))
                          ->find();
@@ -239,7 +240,7 @@
                 //Log activity
                 $this->_save_activity_stafflog( 'editformula', $this->formula->formula_id_string);
             } 
-            
+            // No errors detected
             if($flag) {
                 
                 if($_POST['formstatus'] == Constants_FormAction::EDIT ){
@@ -347,10 +348,7 @@
                     ->group_by('material_supply_id')
                     ->having('material_stock_level_tb.liters', '>', DB::select(array(DB::expr('SUM(liters)'), 'totalLitersUsed'))->from('material_stock_usage_tb'))
                     ->find_all();
-//SELECT stock_id, liters, MIN(stock_taking_date), material_supply_id FROM material_stock_level_tb
-//GROUP BY (material_supply_id)
-//HAVING (SELECT SUM(liters) as totallitersused FROM material_stock_usage_tb
-//) < material_stock_level_tb.liters
+
             echo View::factory('cms/production/formula/material')->set('materialstocklevel', $materialstocklevel);
             
             exit(0);
@@ -494,6 +492,10 @@
                                                      ->set('formStatus', $this->formstatus);
         }
         
+        /**
+         * Generates PDF
+         * @param string $record The record to be PDF generated
+         */
         public function action_generatepdf($record = '') {
             require Kohana::find_file('vendor/dompdf', 'dompdf/dompdf_config.inc');
             

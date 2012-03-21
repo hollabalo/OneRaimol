@@ -4,7 +4,9 @@
  * Controller for Production Work Orders of Sales module
  * 
  * @category   Controller
- * @author     Gerona, John Michael D.
+ * @filesource classes/controller/cms/production/pwo.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Cms_Production_Pwo extends Controller_Cms_Production {
@@ -344,56 +346,7 @@
             //gagawin ng form kapag nasubmit na yung form
             $this->_json_encode();
         }
-        
-        /**
-         * Makes a search then populates the result
-         * into the data grid.
-         * @param string $record The search keyword
-         * @param string $limit Number of search result records per page
-         */
-        public function action_search($record, $limit = NULL) {
-            $this->pageSelectionDesc = $this->config['msg']['actions']['search'] . $this->config['msg']['page']['sales']['pwo'];
-            
-            $this->template->body->bodyContents = View::factory('cms/production/pwo/grid');
-            
-            // Gotta be immune from SQL injection attacks. :)
-            $this->productionworkorder = ORM::factory('pwo');
-            
-            // Build the search conditions based on the selected criteria from the form
-            if(0 == Constants_FormAction::COMPANY) {
-                $this->productionworkorder->where('pwo_id', 'LIKE', $record . '%');
-            }
-//            else if($_POST['searchtype'] == Constants_FormAction::ORDER_DATE) {
-//                $this->salesorder->where('purchase_order_tb.order_date', 'LIKE', $record);
-//            }
-//            else if($_POST['searchtype'] == Constants_FormAction::DELIVERY_DATE) {
-//                $this->salesorder->where('purchase_order_tb.delivery_date', 'LIKE', $record);
-//            }
-//            
-//            
-//            if($_POST['approvefilter'] == Constants_FormAction::APPROVE) {
-//                if(is_array($this->session->get('roles'))) {
-//                    
-//                }
-//                else {
-//                    
-//                }
-//            }
-//            else if($_POST['approvefilter'] == Constants_FormAction::DISAPPROVE) {
-//                $this->salesorder->and_where('', '=', '');
-//            }
-            
-            // Paginate the result set
-            $this->action_limit($limit, $this->productionworkorder);
-            
-            // Set offset and item per page from the pagination object
-            $this->productionworkorder->order_by( 'pwo_id', 'ASC' )
-                             ->limit( $this->pagination->items_per_page )
-                             ->offset( $this->pagination->offset );
-            
-            $this->template->body->bodyContents->set('purchaseorder', $this->productionworkorder->find_all());
-             
-        }
+
         /**
          * Shows the edit form.
          * @param string $record The record to be edited.
@@ -415,6 +368,10 @@
                                                      ->set('formStatus', $this->formstatus);
         }
         
+        /**
+         * Generates PDF
+         * @param string $record The record to be generated
+         */
         public function action_generatepdf($record = '') {
             require Kohana::find_file('vendor/dompdf', 'dompdf/dompdf_config.inc');
             

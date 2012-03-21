@@ -5,7 +5,9 @@
  * System Settings module.
  * 
  * @category   Controller
- * @author     Dizon, Theodore Earl G.
+ * @filesource classes/controller/cms/systemsettings/stafflogs.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Cms_Systemsettings_Stafflogs extends Controller_Cms_Systemsettings {

@@ -6,7 +6,9 @@
  * a great security hole.
  * 
  * @category   Controller
- * @author     Gerona, John Michael D.
+ * @filesource classes/controller/error.php
+ * @package    OneRaimol Client
+ * @author     DCDGLP
  * @copyright  (c) 2011 DCDGLP
  */
     class Controller_Error extends Controller_Cms_Dashboard {
@@ -16,6 +18,7 @@
          * @var _requeste_page The requested page. 
          */
         protected $_requested_page; 
+        
         
         /**
          *
@@ -85,4 +88,4 @@
                                     ->set('error_message', $this->_message) 
                                     ->set('requested_page', $this->_requested_page);
         }
-    } 
+    } // End Controller_Error
